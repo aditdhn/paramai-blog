@@ -3,12 +3,11 @@
  * Giscus-powered comments, scoped to our GitHub Discussions.
  *
  * Wiring (done):
- *   - Repo: aditdhn/paramai-blog, Discussions enabled
- *   - Category: "Announcements" (type: Announcement — only maintainers can
- *     open new threads, which is what Giscus wants so random users can't
- *     pollute the discussion space)
- *   - IDs fetched once via GitHub GraphQL (repository.id and
- *     discussionCategories.id) — hardcoded below.
+ *   - Repo: aditdhn/paramai-blog, Discussions enabled, visibility public
+ *   - Category: "Blog Comments" (dedicated Announcement-type category
+ *     created via giscus.app so only maintainers + Giscus can seed
+ *     threads — random users can't pollute the discussion space)
+ *   - IDs taken from giscus.app's generated snippet — hardcoded below.
  *
  * For Giscus to actually light up, two more prerequisites must hold:
  *   1. The repository must be PUBLIC. Giscus can read a private repo's
@@ -25,8 +24,8 @@
 const {
   repo = 'aditdhn/paramai-blog',
   repoId = 'R_kgDOR9sX3Q',
-  category = 'Announcements',
-  categoryId = 'DIC_kwDOR9sX3c4C6bws',
+  category = 'Blog Comments',
+  categoryId = 'DIC_kwDOR9sX3c4C6byf',
   mapping = 'pathname',
 } = Astro.props
 ---
@@ -79,7 +78,7 @@ const {
     data-category={category}
     data-category-id={categoryId}
     data-mapping={mapping}
-    data-strict="1"
+    data-strict="0"
     data-reactions-enabled="1"
     data-emit-metadata="0"
     data-input-position="bottom"
