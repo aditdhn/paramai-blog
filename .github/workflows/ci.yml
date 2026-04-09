@@ -1,0 +1,50 @@
+name: ci
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+    branches: [main, master]
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    name: build + sanity check
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install deps
+        run: npm ci
+
+      - name: Astro build
+        run: npm run build
+
+      - name: Assert sector stubs in sync with seed script
+        # Re-running the seed script should be a no-op. If it reports creations
+        # other than the ones present, the SECTORS list and content/ drifted.
+        run: |
+          OUT=$(node scripts/seed-sectors.mjs)
+          echo "$OUT"
+          if echo "$OUT" | grep -q "created, 41 skipped"; then
+            echo "Seed script and content/sectors/ are in sync."
+          else
+            echo "::error::Seed script and content/sectors/ are out of sync — did you add a sector without updating SECTORS?"
+            exit 1
+          fi
+
+      - name: Upload build artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: dist
+          path: dist
+          retention-days: 7
