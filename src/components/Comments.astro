@@ -2,26 +2,31 @@
 /**
  * Giscus-powered comments, scoped to our GitHub Discussions.
  *
- * Setup (one-time, by repo owner):
- *   1. Install giscus app on aditdhn/paramai-blog:
+ * Wiring (done):
+ *   - Repo: aditdhn/paramai-blog, Discussions enabled
+ *   - Category: "Announcements" (type: Announcement — only maintainers can
+ *     open new threads, which is what Giscus wants so random users can't
+ *     pollute the discussion space)
+ *   - IDs fetched once via GitHub GraphQL (repository.id and
+ *     discussionCategories.id) — hardcoded below.
+ *
+ * For Giscus to actually light up, two more prerequisites must hold:
+ *   1. The repository must be PUBLIC. Giscus can read a private repo's
+ *      discussions via the app, but visitors can't, so comments won't
+ *      render in the browser. If you keep the repo private, Giscus shows
+ *      an empty state.
+ *   2. The giscus GitHub App must be installed on the repo:
  *      https://github.com/apps/giscus
- *   2. Enable Discussions on the repo (Settings → Features → Discussions)
- *   3. Create a "Blog Comments" category (type: Announcement)
- *   4. Go to https://giscus.app, enter aditdhn/paramai-blog, pick the category,
- *      and copy the data-repo-id / data-category-id into the values below.
  *
- * The component ships with placeholders tagged TODO so we can still build and
- * deploy the site; when the owner pastes the real IDs, Giscus lights up.
- *
- * Giscus uses GitHub OAuth, which requires a GitHub account (age 13+ per
- * GitHub's ToS). Combined with our own 16+ notice, this is our age gate.
+ * Giscus uses GitHub OAuth to post, which requires a GitHub account (age
+ * 13+ per GitHub's ToS). Combined with our own 16+ notice, that's our
+ * age gate.
  */
 const {
   repo = 'aditdhn/paramai-blog',
-  // TODO(owner): paste real IDs from https://giscus.app after enabling Discussions.
-  repoId = 'REPLACE_WITH_REPO_ID',
-  category = 'Blog Comments',
-  categoryId = 'REPLACE_WITH_CATEGORY_ID',
+  repoId = 'R_kgDOR9sX3Q',
+  category = 'Announcements',
+  categoryId = 'DIC_kwDOR9sX3c4C6bws',
   mapping = 'pathname',
 } = Astro.props
 ---
