@@ -1,6 +1,6 @@
 # paramai-blog
 
-Content hub for **[www.paramai.blog](https://www.paramai.blog)** — the editorial/SEO arm of [ParamAI](https://paramai.in).
+Content hub for **[paramai.blog](https://paramai.blog)** — the editorial/SEO arm of [ParamAI](https://paramai.in).
 
 Every post funnels to the assessment on `paramai.in`. The blog deliberately lives in a **separate repo and separate domain** so its SEO footprint, deploy cadence, and CMS surface stay independent of the main product.
 
@@ -52,8 +52,8 @@ Keep the `SECTORS` array in `scripts/seed-sectors.mjs` in sync with `src/backend
 
 **Steady state:**
 
-1. Push to `main` → Vercel builds and deploys to `www.paramai.blog`.
-2. Apex `paramai.blog` redirects to `www.paramai.blog` via `vercel.json`.
+1. Push to `main` → Vercel builds and deploys to `paramai.blog`.
+2. `www.paramai.blog` 308-redirects to the apex `paramai.blog` via `vercel.json`.
 3. Every PR gets a preview deploy URL for review.
 
 ## Related repos

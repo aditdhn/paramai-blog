@@ -1,6 +1,6 @@
-# Deploying paramai-blog to www.paramai.blog
+# Deploying paramai-blog to paramai.blog
 
-End-to-end deploy guide: get the Astro blog live at `https://www.paramai.blog` using:
+End-to-end deploy guide: get the Astro blog live at `https://paramai.blog` using:
 
 - **Domain**: already registered with Hostinger
 - **Hosting**: Vercel Free (Hobby plan, ₹0/month)
@@ -57,13 +57,15 @@ Click **"Deploy"**. Wait ~1 minute. Vercel gives you a temporary URL like `param
 
 ### 2.2 Add both apex and www
 
-Add these **one at a time**:
+The canonical URL is the **apex** `paramai.blog` (cleaner than `www.paramai.blog`, and matches `astro.config.mjs`). Add both domains so www visitors are redirected to the apex:
 
-1. Type `www.paramai.blog` in the input, click **"Add"**.
-2. Type `paramai.blog` in the input, click **"Add"**.
-3. When Vercel asks how to handle redirects, choose:
-   - **Redirect `paramai.blog` → `www.paramai.blog`** (permanent 308)
-   - This makes `www` the canonical version, which matches `vercel.json` and `astro.config.mjs`.
+1. Type `paramai.blog` in the input, click **"Add"** → mark as **Primary**.
+2. Type `www.paramai.blog` in the input, click **"Add"**.
+3. When Vercel asks how to handle `www.paramai.blog`, choose:
+   - **Redirect to `paramai.blog`** (permanent 308)
+   - This makes the apex the canonical version and ensures the SSL cert Vercel issues covers both hostnames.
+
+> **Important:** You *must* add `www.paramai.blog` to the project even if you don't plan to use it. Otherwise Vercel won't issue an SSL cert for `www`, and anyone who types `www.paramai.blog` out of habit hits an SSL error (the `schannel: SEC_E_WRONG_PRINCIPAL` failure). Adding it as a redirect is the fix.
 
 Vercel will now show both domains with a **"Invalid Configuration"** warning and a list of DNS records you need to add at your registrar. **Keep this tab open** — you'll copy values from it in Part 3.
 
@@ -172,18 +174,18 @@ As soon as DNS verifies, Vercel automatically requests a Let's Encrypt certifica
 
 ### 4.3 Smoke test
 
-Open all four URLs. They should all land on the same page (the `www` version with a valid HTTPS padlock):
+Open all four URLs. They should all land on the apex with a valid HTTPS padlock:
 
-- <http://paramai.blog> → should redirect to `https://www.paramai.blog`
-- <https://paramai.blog> → should redirect to `https://www.paramai.blog`
-- <http://www.paramai.blog> → should redirect to `https://www.paramai.blog`
-- <https://www.paramai.blog> → homepage with 41 sector cards
+- <http://paramai.blog> → should redirect to `https://paramai.blog`
+- <https://paramai.blog> → homepage with 41 sector cards
+- <http://www.paramai.blog> → should redirect to `https://paramai.blog`
+- <https://www.paramai.blog> → should redirect to `https://paramai.blog`
 
 Also check:
-- <https://www.paramai.blog/sitemap-index.xml> → XML sitemap
-- <https://www.paramai.blog/rss.xml> → RSS feed
-- <https://www.paramai.blog/robots.txt> → `Allow: /` + sitemap link
-- <https://www.paramai.blog/sectors/ai-ml/> → a sector page
+- <https://paramai.blog/sitemap-index.xml> → XML sitemap
+- <https://paramai.blog/rss.xml> → RSS feed
+- <https://paramai.blog/robots.txt> → `Allow: /` + sitemap link
+- <https://paramai.blog/sectors/ai-ml/> → a sector page
 
 ---
 
@@ -193,7 +195,7 @@ Also check:
 
 1. Go to <https://search.google.com/search-console>.
 2. Click **"Add property"** → choose **"URL prefix"**.
-3. Enter `https://www.paramai.blog` and click **Continue**.
+3. Enter `https://paramai.blog` and click **Continue**.
 4. Verify ownership — the easiest method is **"HTML tag"**:
    - Google gives you a `<meta name="google-site-verification" content="..." />` tag.
    - Add it once to `src/layouts/BaseLayout.astro` inside `<head>`, commit, push. Vercel auto-redeploys in ~1 minute, then click **"Verify"** in Search Console.
@@ -228,7 +230,7 @@ Either way, the UTM parameters already baked into `AssessmentCTA.astro` (`utm_so
 1. Open `src/content/sectors/ai-ml.mdx` (or your highest-priority sector).
 2. Replace the `> **TODO:**` sections with real content (~800–1500 words).
 3. Change frontmatter: `draft: true` → `draft: false`.
-4. Commit + push. Vercel auto-deploys in ~1 minute. The post is live at `https://www.paramai.blog/sectors/ai-ml/` and appears on the homepage grid.
+4. Commit + push. Vercel auto-deploys in ~1 minute. The post is live at `https://paramai.blog/sectors/ai-ml/` and appears on the homepage grid.
 
 ---
 
@@ -239,8 +241,9 @@ Either way, the UTM parameters already baked into `AssessmentCTA.astro` (`utm_so
 | "Invalid Configuration" stuck red in Vercel for >1 hour | DNS records not propagated or wrong values | Re-check Hostinger DNS panel values exactly match what Vercel's Domains tab shows |
 | "This site can't provide a secure connection" | DNS propagated but SSL not issued yet | Wait 2 more minutes and refresh; Vercel retries automatically |
 | Homepage shows a Vercel "Not Found" page | Custom domain attached to wrong project | In Vercel, check the project linked to the domain under Settings → Domains |
-| `paramai.blog` works but `www.paramai.blog` doesn't | CNAME record missing or pointing wrong | Add/fix the `CNAME www → cname.vercel-dns.com` record in Hostinger |
-| `www` works but apex doesn't redirect | A record missing on `@` | Add `A @ 76.76.21.21` in Hostinger |
+| `paramai.blog` works but `www.paramai.blog` shows SSL error (`SEC_E_WRONG_PRINCIPAL`) | `www` wasn't added to the Vercel project — only the apex was | In Vercel → Settings → Domains, add `www.paramai.blog` and set it to redirect to `paramai.blog`. Vercel will re-issue the cert to cover both. |
+| `www.paramai.blog` resolves but DNS doesn't find it | CNAME record missing or pointing wrong | Add/fix the `CNAME www → cname.vercel-dns.com` record in Hostinger |
+| `www` works but apex doesn't | A record missing on `@` | Add `A @ 76.76.21.21` in Hostinger |
 | Build passes locally but fails on Vercel | Node version mismatch | In Vercel → Settings → General → Node.js Version, set to **20.x** |
 | New commits don't deploy | Branch not connected | Vercel → Settings → Git → check "Production Branch" is `main` |
 

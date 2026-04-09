@@ -17,9 +17,9 @@
   ],
   "redirects": [
     {
-      "source": "/",
-      "has": [{ "type": "host", "value": "paramai.blog" }],
-      "destination": "https://www.paramai.blog/",
+      "source": "/(.*)",
+      "has": [{ "type": "host", "value": "www.paramai.blog" }],
+      "destination": "https://paramai.blog/$1",
       "statusCode": 308
     }
   ]
