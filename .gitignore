@@ -1,0 +1,26 @@
+# Build
+dist/
+.astro/
+
+# Deps
+node_modules/
+.pnpm-store/
+
+# Env
+.env
+.env.*
+!.env.example
+
+# Editor
+.vscode/
+.idea/
+.DS_Store
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Vercel
+.vercel

@@ -1,0 +1,48 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro'
+import AssessmentCTA from '@/components/AssessmentCTA.astro'
+import { getCollection } from 'astro:content'
+
+const sectors = (await getCollection('sectors', ({ data }) => !data.draft)).sort(
+  (a, b) => Number(a.data.sectorId.slice(1)) - Number(b.data.sectorId.slice(1)),
+)
+---
+
+<BaseLayout
+  title="ParamAI Blog — Career guidance, assessment science, 930+ real careers"
+  description="Explore 41 career sectors, read the research behind ParamAI’s AI assessment, and find your best-fit career path."
+>
+  <section class="text-center">
+    <p class="text-sm font-semibold uppercase tracking-wide text-brand-600">
+      ParamAI Blog
+    </p>
+    <h1 class="mt-2 text-4xl font-bold text-brand-900 sm:text-5xl">
+      Your map to 930+ real careers.
+    </h1>
+    <p class="mx-auto mt-4 max-w-xl text-lg text-slate-600">
+      Honest, research-backed writing on career discovery, assessment science,
+      and the 41 sectors powering India’s next decade of work.
+    </p>
+  </section>
+
+  <AssessmentCTA />
+
+  <section class="mt-12">
+    <h2 class="text-2xl font-bold text-brand-900">Explore by sector</h2>
+    <ul class="mt-6 grid gap-4 sm:grid-cols-2">
+      {
+        sectors.map((sector) => (
+          <li class="rounded-xl border border-slate-200 p-5 hover:border-brand-500">
+            <a href={`/sectors/${sector.data.sectorSlug}/`} class="block">
+              <p class="text-xs font-mono text-brand-600">{sector.data.sectorId}</p>
+              <h3 class="mt-1 text-lg font-semibold text-brand-900">
+                {sector.data.title}
+              </h3>
+              <p class="mt-1 text-sm text-slate-600">{sector.data.heroTagline}</p>
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </section>
+</BaseLayout>

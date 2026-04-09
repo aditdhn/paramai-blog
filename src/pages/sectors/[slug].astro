@@ -1,0 +1,38 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro'
+import AssessmentCTA from '@/components/AssessmentCTA.astro'
+import { getCollection, type CollectionEntry } from 'astro:content'
+
+export async function getStaticPaths() {
+  const sectors = await getCollection('sectors')
+  return sectors.map((entry) => ({
+    params: { slug: entry.data.sectorSlug },
+    props: { entry },
+  }))
+}
+
+interface Props {
+  entry: CollectionEntry<'sectors'>
+}
+
+const { entry } = Astro.props
+const { Content } = await entry.render()
+---
+
+<BaseLayout
+  title={`${entry.data.title} | ParamAI Blog`}
+  description={entry.data.description}
+  canonical={entry.data.canonicalToApp}
+>
+  <article class="prose prose-slate max-w-none">
+    <p class="text-xs font-mono text-brand-600">
+      {entry.data.sectorId} · Sector guide
+    </p>
+    <h1 class="mt-2 text-4xl font-bold text-brand-900">{entry.data.title}</h1>
+    <p class="mt-2 text-lg text-slate-600">{entry.data.heroTagline}</p>
+
+    <Content />
+
+    <AssessmentCTA sectorSlug={entry.data.sectorSlug} />
+  </article>
+</BaseLayout>

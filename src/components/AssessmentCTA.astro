@@ -1,0 +1,37 @@
+---
+import { ASSESSMENT_URL } from '@/consts'
+
+interface Props {
+  sectorSlug?: string
+  label?: string
+}
+
+const {
+  sectorSlug,
+  label = 'Find your best-fit career in 15 minutes',
+} = Astro.props
+
+// Attach a UTM so we can measure blog→assessment conversion in analytics.
+const href = sectorSlug
+  ? `${ASSESSMENT_URL}?utm_source=blog&utm_medium=sector&utm_campaign=${sectorSlug}`
+  : `${ASSESSMENT_URL}?utm_source=blog&utm_medium=inline`
+---
+
+<aside class="my-10 rounded-2xl border border-brand-100 bg-brand-50 p-6">
+  <p class="text-sm font-semibold uppercase tracking-wide text-brand-700">
+    Ready to go deeper?
+  </p>
+  <h3 class="mt-2 text-xl font-bold text-brand-900">{label}</h3>
+  <p class="mt-2 text-slate-700">
+    ParamAI’s AI assessment analyses 388 diagnostic questions across RIASEC +
+    OCEAN and matches you to 930+ real careers — backed by India’s largest
+    calibrated career knowledge bank.
+  </p>
+  <a
+    href={href}
+    class="mt-4 inline-flex items-center rounded-full bg-brand-600 px-5 py-2.5 text-sm font-semibold text-white hover:bg-brand-700"
+    rel="noopener"
+  >
+    Start the free assessment →
+  </a>
+</aside>

@@ -1,0 +1,88 @@
+---
+import { SITE_TITLE, SITE_DESCRIPTION, SITE_URL, APP_URL } from '@/consts'
+
+interface Props {
+  title?: string
+  description?: string
+  canonical?: string
+  ogImage?: string
+}
+
+const {
+  title = SITE_TITLE,
+  description = SITE_DESCRIPTION,
+  canonical,
+  ogImage = '/og-default.png',
+} = Astro.props
+
+const canonicalURL = canonical ?? new URL(Astro.url.pathname, SITE_URL).toString()
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonicalURL} />
+
+    <meta property="og:type" content="article" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonicalURL} />
+    <meta property="og:image" content={new URL(ogImage, SITE_URL).toString()} />
+    <meta property="og:site_name" content="ParamAI Blog" />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={new URL(ogImage, SITE_URL).toString()} />
+
+    <link rel="alternate" type="application/rss+xml" title={SITE_TITLE} href="/rss.xml" />
+    <link
+      rel="preconnect"
+      href="https://fonts.googleapis.com"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body class="min-h-screen bg-white font-sans text-slate-900 antialiased">
+    <header class="border-b border-slate-200">
+      <div class="mx-auto flex max-w-5xl items-center justify-between px-6 py-5">
+        <a href="/" class="text-lg font-bold text-brand-900">ParamAI Blog</a>
+        <nav class="flex items-center gap-6 text-sm font-medium">
+          <a href="/sectors" class="hover:text-brand-600">Sectors</a>
+          <a href="/posts" class="hover:text-brand-600">Posts</a>
+          <a
+            href={APP_URL}
+            class="rounded-full bg-brand-600 px-4 py-2 text-white hover:bg-brand-700"
+            rel="noopener"
+          >
+            Take the assessment
+          </a>
+        </nav>
+      </div>
+    </header>
+
+    <main class="mx-auto max-w-3xl px-6 py-12">
+      <slot />
+    </main>
+
+    <footer class="border-t border-slate-200 py-10">
+      <div class="mx-auto max-w-5xl px-6 text-sm text-slate-500">
+        <p>
+          &copy; {new Date().getFullYear()} ParamAI. Read more and take the
+          assessment at
+          <a href={APP_URL} class="text-brand-600 hover:underline" rel="noopener"
+            >paramai.in</a
+          >.
+        </p>
+      </div>
+    </footer>
+  </body>
+</html>

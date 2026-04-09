@@ -1,0 +1,34 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro'
+import { getCollection } from 'astro:content'
+
+const sectors = (await getCollection('sectors', ({ data }) => !data.draft)).sort(
+  (a, b) => Number(a.data.sectorId.slice(1)) - Number(b.data.sectorId.slice(1)),
+)
+---
+
+<BaseLayout
+  title="All 41 career sectors | ParamAI Blog"
+  description="Browse all 41 career sectors covered by ParamAI’s knowledge bank — from AI/ML to skilled trades."
+>
+  <h1 class="text-3xl font-bold text-brand-900">All 41 sectors</h1>
+  <p class="mt-2 text-slate-600">
+    Every sector covered in ParamAI’s career knowledge bank. Start anywhere.
+  </p>
+
+  <ul class="mt-8 space-y-4">
+    {
+      sectors.map((sector) => (
+        <li class="border-b border-slate-100 pb-4">
+          <a href={`/sectors/${sector.data.sectorSlug}/`} class="block group">
+            <p class="text-xs font-mono text-brand-600">{sector.data.sectorId}</p>
+            <h2 class="mt-1 text-xl font-semibold text-brand-900 group-hover:text-brand-600">
+              {sector.data.title}
+            </h2>
+            <p class="mt-1 text-sm text-slate-600">{sector.data.heroTagline}</p>
+          </a>
+        </li>
+      ))
+    }
+  </ul>
+</BaseLayout>
