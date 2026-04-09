@@ -48,9 +48,13 @@ Keep the `SECTORS` array in `scripts/seed-sectors.mjs` in sync with `src/backend
 
 ## Deploy
 
+**First-time setup:** see [DEPLOY.md](./DEPLOY.md) for a step-by-step guide covering Vercel project import, Hostinger DNS records, SSL, and Google Search Console submission. Total time ~15 minutes + DNS propagation.
+
+**Steady state:**
+
 1. Push to `main` → Vercel builds and deploys to `www.paramai.blog`.
 2. Apex `paramai.blog` redirects to `www.paramai.blog` via `vercel.json`.
-3. Submit `https://www.paramai.blog/sitemap-index.xml` to Google Search Console as a new property.
+3. Every PR gets a preview deploy URL for review.
 
 ## Related repos
 
