@@ -5,30 +5,66 @@ import { getCollection } from 'astro:content'
 const sectors = (await getCollection('sectors', ({ data }) => !data.draft)).sort(
   (a, b) => Number(a.data.sectorId.slice(1)) - Number(b.data.sectorId.slice(1)),
 )
+
+const published = sectors.filter((s) => !s.body.trim().startsWith('> **TODO:**')).length
 ---
 
 <BaseLayout
   title="All 41 career sectors | ParamAI Blog"
-  description="Browse all 41 career sectors covered by ParamAI’s knowledge bank — from AI/ML to skilled trades."
+  description="Browse all 41 career sectors covered by ParamAI's knowledge bank — from AI/ML to skilled trades."
 >
-  <h1 class="text-3xl font-bold text-brand-900">All 41 sectors</h1>
-  <p class="mt-2 text-slate-600">
-    Every sector covered in ParamAI’s career knowledge bank. Start anywhere.
-  </p>
+  <section class="mx-auto max-w-5xl px-6 py-16">
+    <p class="text-xs font-semibold uppercase tracking-wider text-brand-600 dark:text-brand-400">
+      Sectors
+    </p>
+    <h1 class="mt-2 text-4xl font-bold tracking-tight sm:text-5xl">All 41 sectors</h1>
+    <p class="mt-4 max-w-2xl text-lg text-ink-600 dark:text-ink-300">
+      Every sector covered by ParamAI's career knowledge bank. We're writing a
+      full guide for each one — <strong>{published}</strong> of 41 are fully
+      written so far, the rest have stubs you can watch for updates.
+    </p>
 
-  <ul class="mt-8 space-y-4">
-    {
-      sectors.map((sector) => (
-        <li class="border-b border-slate-100 pb-4">
-          <a href={`/sectors/${sector.data.sectorSlug}/`} class="block group">
-            <p class="text-xs font-mono text-brand-600">{sector.data.sectorId}</p>
-            <h2 class="mt-1 text-xl font-semibold text-brand-900 group-hover:text-brand-600">
-              {sector.data.title}
-            </h2>
-            <p class="mt-1 text-sm text-slate-600">{sector.data.heroTagline}</p>
-          </a>
-        </li>
-      ))
-    }
-  </ul>
+    <ul class="mt-10 divide-y divide-ink-200 dark:divide-ink-800">
+      {
+        sectors.map((sector) => {
+          const isStub = sector.body.trim().startsWith('> **TODO:**')
+          return (
+            <li>
+              <a
+                href={`/sectors/${sector.data.sectorSlug}/`}
+                class="group flex items-center justify-between gap-4 py-5 transition-colors"
+              >
+                <div class="min-w-0 flex-1">
+                  <div class="flex items-center gap-2">
+                    <span class="text-[11px] font-mono font-semibold text-ink-400 dark:text-ink-500">
+                      {sector.data.sectorId}
+                    </span>
+                    {!isStub && (
+                      <span class="rounded-full bg-emerald-100 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-emerald-700 dark:bg-emerald-950/60 dark:text-emerald-300">
+                        Written
+                      </span>
+                    )}
+                    {isStub && (
+                      <span class="rounded-full bg-ink-100 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-ink-500 dark:bg-ink-800/60 dark:text-ink-400">
+                        Coming soon
+                      </span>
+                    )}
+                  </div>
+                  <h2 class="mt-1 text-lg font-bold group-hover:text-brand-600 dark:group-hover:text-brand-400">
+                    {sector.data.title}
+                  </h2>
+                  <p class="mt-0.5 text-sm text-ink-600 dark:text-ink-300">
+                    {sector.data.heroTagline}
+                  </p>
+                </div>
+                <span class="hidden text-brand-600 group-hover:translate-x-0.5 transition-transform sm:block dark:text-brand-400">
+                  →
+                </span>
+              </a>
+            </li>
+          )
+        })
+      }
+    </ul>
+  </section>
 </BaseLayout>

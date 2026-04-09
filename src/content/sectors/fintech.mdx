@@ -1,36 +1,75 @@
 ---
 title: "Fintech"
-description: "Payments, lending, wealth, and the financial rails of Digital India."
+description: "Payments, lending, wealth, insurance, and the financial rails of Digital India — where the jobs actually are in 2026 and who's built to thrive in them."
 sectorId: "S6"
 sectorSlug: "fintech"
 heroTagline: "Payments, lending, wealth, and the financial rails of Digital India."
 pubDate: 2026-04-09
-tags: ["sector", "fintech"]
-draft: true
+tags: ["sector", "fintech", "payments", "lending"]
+draft: false
 ---
 
 import AssessmentCTA from '@/components/AssessmentCTA.astro'
 
-## What this sector covers
+## The five fintechs inside "fintech"
 
-> **TODO:** Write 2-3 paragraphs on what fintech actually involves
-> in India in 2026 — major sub-areas, typical employers, and how the sector is
-> changing. Keep it honest; skip the hype.
+People say "fintech" as if it's one sector. It's really five, and the personality fit is very different across them.
 
-## Who thrives here
+**Payments.** UPI, cards, merchant acquiring, cross-border rails. Razorpay, PhonePe, Cashfree, Juspay. High-throughput engineering problems, regulatory-heavy, and extremely competitive on uptime. If you find the idea of "99.99% → 99.999% is 10x more work" genuinely interesting, this is your tribe.
 
-> **TODO:** What personality profile (RIASEC + OCEAN) tends to fit this sector?
-> Pull language from ParamAI’s trait model so the page ranks for assessment-
-> related queries.
+**Lending.** Consumer credit, SME loans, BNPL, supply chain finance. CRED, KreditBee, LendingKart, Axio. The work is half data science (underwriting models) and half product engineering (collections, KYC, disbursal). The tension between "approve more" and "default rate stays low" is the job.
 
-## Entry paths
+**Wealth and investments.** Zerodha, Groww, Smallcase, INDMoney, Cube Wealth. Smaller teams, more design-conscious, longer product cycles. The user is usually a retail investor, which means you spend a lot of time simplifying things that are genuinely complicated.
 
-> **TODO:** 3-4 realistic entry paths (degree routes, bootcamps, apprenticeships,
-> lateral moves). Link to the specific careers in ParamAI’s knowledge bank.
+**Insurance.** Acko, Digit, Turtlemint, PolicyBazaar. The most underrated fintech sub-sector for engineers — old-line insurers are desperate for technical talent and will pay well for it. The work is closer to data science than payments engineering.
+
+**Infrastructure and regtech.** Setu, M2P, Falcon, Hyperverge. You build the APIs the above four consume. Smaller, smarter, more technical teams, and usually the highest compensation per headcount.
+
+## Who thrives in fintech
+
+Fintech rewards a very specific mix that's unusual for a tech sector:
+
+- **High Conscientiousness + high Stability** — you are handling money. Cavalier attitudes get caught in audits, and audits matter. Personalities that prefer "move fast and break things" are bad fits for lending and payments, though they can work in infrastructure.
+- **High Analytical** — almost every decision is a risk/return tradeoff. Intuition without numbers will lose you money.
+- **Moderate-to-high Social** — regulators, bank partners, compliance teams. Unlike pure tech companies, you cannot avoid talking to people outside engineering.
+- **High Precision** — a decimal point in the wrong place is not a funny story in fintech.
+
+RIASEC profile usually lands **Investigative-Conventional** for risk/underwriting roles and **Investigative-Enterprising** for product and growth roles. The "Conventional" component surprises people but it's real — regulatory work genuinely rewards rule-following temperament.
+
+## Realistic entry paths
+
+**Engineering track.** CS or equivalent undergrad, strong software fundamentals, and a demonstrated interest in either (a) distributed systems (if you want payments) or (b) applied statistics (if you want underwriting). The best hiring signal is having built something money-adjacent — a toy trading bot, a personal budgeting app, or a contribution to an open-source lending library. Fintechs hire a lot from campus but the conversion rate is highest for students with portfolio projects in the domain.
+
+**Product/analyst track.** Any quantitative degree plus genuine curiosity about how financial products work. Read the RBI master directions for the product you care about — if you can get through 60 pages of regulatory text without your eyes glazing over, you will be hired very quickly. Most product managers avoid the regulations and pay for it later.
+
+**Risk/data science track.** Statistics, math, economics, or engineering with a statistics minor. Companies like CRED and KreditBee run target-heavy recruiting for this role. The work is closer to "data scientist at a bank" than "data scientist at Flipkart" — the datasets are smaller but the consequences of being wrong are much larger.
+
+**Domain track.** If you're coming from finance, actuarial, or banking, your domain knowledge is valuable. The gap to bridge is technical — specifically SQL, some Python, and comfort reading API documentation. Don't try to become an engineer overnight; become the person on the team who can translate between finance and engineering.
+
+## What the jobs actually pay
+
+India, early 2026:
+
+- **Software engineer, fresh graduate (top-5 fintech):** ₹20–40 LPA
+- **Software engineer, 3–5 years:** ₹40–80 LPA
+- **Principal engineer (payments infrastructure):** ₹1–2 crore, with the top being higher at infra-focused companies
+- **Data scientist (underwriting/risk):** ₹25–60 LPA depending on experience
+- **Product manager, fresh graduate:** ₹22–45 LPA
+- **Compliance/regulatory specialist:** ₹12–35 LPA — quietly well-paid and severely undersupplied
+
+Fintech pays a notable premium over the broader tech market because (a) regulatory complexity limits who can hire and (b) the unit economics of the business can actually support the salaries.
 
 <AssessmentCTA sectorSlug="fintech" />
 
 ## Further reading
 
-> **TODO:** Link 2-3 authoritative external sources (reports, syllabi,
-> government programs).
+- **For the payments rails:** *Payments Systems in India: A Primer* by the RBI. Dry but authoritative, and the single best primer on how UPI, IMPS, NEFT, and RTGS actually work.
+- **For lending:** *The End of Alchemy* by Mervyn King. Not India-specific but the clearest explanation of why credit risk is fundamentally hard.
+- **For the sector as a whole:** BCG's *Fintech in India* annual report and Inc42's Indian fintech database — both are free and give you real numbers rather than press-release hype.
+- **For the work day-to-day:** the engineering blogs of Razorpay, Zerodha, and CRED are underrated windows into what the work actually feels like.
+
+## Related sectors
+
+- **[Data Science & Analytics](/sectors/data-science/)** — heavy overlap with the risk/underwriting track
+- **[Cybersecurity](/sectors/cybersecurity/)** — fintech is one of the biggest hiring grounds for security engineers
+- **[Legal Tech & Compliance](/sectors/legal-tech-compliance/)** — the regulatory side of fintech is effectively its own career track

@@ -1,36 +1,77 @@
 ---
 title: "Data Science & Analytics"
-description: "Turning messy data into decisions: analysts, scientists, and data engineers."
+description: "Turning messy data into decisions — analysts, scientists, and data engineers in Indian companies today, and how to tell which role fits you."
 sectorId: "S2"
 sectorSlug: "data-science"
 heroTagline: "Turning messy data into decisions: analysts, scientists, and data engineers."
 pubDate: 2026-04-09
-tags: ["sector", "data-science"]
-draft: true
+tags: ["sector", "data-science", "analytics"]
+draft: false
 ---
 
 import AssessmentCTA from '@/components/AssessmentCTA.astro'
 
-## What this sector covers
+## What "data science" actually means in an Indian company
 
-> **TODO:** Write 2-3 paragraphs on what data science & analytics actually involves
-> in India in 2026 — major sub-areas, typical employers, and how the sector is
-> changing. Keep it honest; skip the hype.
+If you ask ten hiring managers what a "data scientist" does, you'll get ten different answers — because the title has diverged into three distinct roles that need very different skills and personalities.
+
+**Data analyst.** You answer business questions with SQL, dashboards, and the occasional Python script. A product manager asks "why did retention drop last week?" and you figure it out. Most "data science" jobs at early-stage Indian startups are actually this. It's also the most student-friendly entry point — you can do the work with undergraduate-level statistics, and the skills transfer to any domain you find interesting.
+
+**Data scientist.** You build statistical or ML models that change how the business operates — churn prediction, LTV estimation, pricing experiments, recommendation systems. This is halfway between analytics and ML engineering. The math is harder than analytics, and you spend more time arguing with product managers about whether your model should actually be deployed.
+
+**Data engineer.** You build the pipelines and warehouses that the above two roles depend on. Less glamorous on social media, more important to the business, and paid nearly as well as applied ML engineers. India has a severe shortage of good data engineers — if you enjoy systems work and SQL doesn't bore you, this is the quietest path to a high-paying career.
 
 ## Who thrives here
 
-> **TODO:** What personality profile (RIASEC + OCEAN) tends to fit this sector?
-> Pull language from ParamAI’s trait model so the page ranks for assessment-
-> related queries.
+The trait profiles differ across the three sub-roles, which is why people often tell you "I hated data science" when they really mean "I hated one specific flavor of it."
 
-## Entry paths
+- **For analysts:** high **Analytical** + high **Social** (yes, social — you spend half your time explaining findings to non-technical people). RIASEC profile usually **Investigative-Conventional** or **Investigative-Social**.
+- **For data scientists:** high **Analytical** + high **Technical**, with at least moderate **Independence** because you'll work on long-tail problems with unclear answers.
+- **For data engineers:** high **Technical** + high **Structure**. You're essentially a software engineer whose product is reliability.
 
-> **TODO:** 3-4 realistic entry paths (degree routes, bootcamps, apprenticeships,
-> lateral moves). Link to the specific careers in ParamAI’s knowledge bank.
+Across all three, **Conscientiousness** (Big Five) is load-bearing. Sloppy data work causes real business damage that takes months to un-mess.
+
+## Realistic entry paths
+
+**For students (Class 11–undergrad):**
+
+The cheapest way to find out if you like this work: download a free dataset (India Open Data portal has thousands), load it in a Google Colab notebook, and try to answer a real question — *"do states with higher literacy have better vaccination rates?"* The process of cleaning messy data, picking the right chart, and noticing the thing you didn't expect to notice is exactly what the job feels like.
+
+If that process felt boring, data science is probably not for you. If it felt like a puzzle you wanted to keep solving, you've just done a more useful 2 hours than most certificate courses.
+
+**Formal path:** Any quantitative degree works — statistics, economics, CS, applied math, physics, even engineering. What matters more than the degree is whether you took a proper statistics course and whether you can write SQL without looking it up.
+
+**For career changers (especially from software):**
+
+The jump to data engineer is the smallest — it's mostly new tools (Snowflake, dbt, Airflow, BigQuery) on top of skills you already have. The jump to analyst is bigger than people think, because the hard part isn't technique but business judgment. The jump to data scientist sits in between.
+
+**The trap to avoid:** "data science bootcamps" that promise ₹20 LPA jobs after 3 months. The market for inexperienced data scientists is saturated; the market for experienced analysts who can communicate is not. If you're starting fresh, aim at the analyst role first — the ceiling is the same, and the first job is far easier to get.
+
+## What the jobs actually pay
+
+As of early 2026 (India, tier-1 cities):
+
+- **Data analyst, fresh graduate:** ₹8–18 LPA
+- **Data analyst, 3–5 years:** ₹18–35 LPA
+- **Data scientist, fresh graduate:** ₹12–25 LPA
+- **Data scientist, 3–5 years:** ₹25–60 LPA
+- **Data engineer, fresh graduate:** ₹14–28 LPA
+- **Data engineer, 3–5 years:** ₹30–70 LPA
+- **Senior/staff data engineer (tier-1 product company):** ₹60 LPA to 1.5+ crore
+
+Data engineering salaries have been climbing faster than the others for three years running — it's the quiet supply-demand story of the sector.
 
 <AssessmentCTA sectorSlug="data-science" />
 
 ## Further reading
 
-> **TODO:** Link 2-3 authoritative external sources (reports, syllabi,
-> government programs).
+- **For SQL:** *SQLZoo* and *Mode Analytics' SQL tutorial*. Free, and they have real query puzzles rather than toy examples.
+- **For statistics intuition:** *Statistical Rethinking* by Richard McElreath. The lectures are on YouTube and are the clearest explanation of Bayesian thinking you'll find.
+- **For communication:** *Storytelling with Data* by Cole Nussbaumer Knaflic. An underrated skill that separates good analysts from mediocre ones.
+- **For the data engineer track:** the dbt community's free tutorials, plus Max Beauchemin's "Rise of the Data Engineer" essay.
+
+## Related sectors
+
+- **[AI & Machine Learning](/sectors/ai-ml/)** — the obvious adjacent track if you lean toward modeling
+- **[Fintech](/sectors/fintech/)** — one of the biggest employers of data scientists in India
+- **[GovTech & Public Admin](/sectors/govtech-public-admin/)** — if you'd rather use data to shape policy than revenue

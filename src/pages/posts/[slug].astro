@@ -1,7 +1,9 @@
 ---
 import BaseLayout from '@/layouts/BaseLayout.astro'
 import AssessmentCTA from '@/components/AssessmentCTA.astro'
+import Comments from '@/components/Comments.astro'
 import { getCollection, type CollectionEntry } from 'astro:content'
+import { readingTime } from '@/lib/readingTime'
 
 export async function getStaticPaths() {
   const posts = await getCollection('posts')
@@ -17,20 +19,41 @@ interface Props {
 
 const { entry } = Astro.props
 const { Content } = await entry.render()
+const rt = readingTime(entry.body)
 ---
 
 <BaseLayout title={`${entry.data.title} | ParamAI Blog`} description={entry.data.description}>
-  <article class="prose prose-slate max-w-none">
-    <h1 class="text-4xl font-bold text-brand-900">{entry.data.title}</h1>
-    <p class="mt-2 text-sm text-slate-500">
-      {entry.data.author} ·{' '}
-      {entry.data.pubDate.toLocaleDateString('en-IN', {
-        year: 'numeric',
-        month: 'long',
-        day: 'numeric',
-      })}
-    </p>
-    <Content />
+  <section class="relative overflow-hidden border-b border-ink-200 dark:border-ink-800">
+    <div
+      class="absolute inset-0 -z-10 opacity-50 dark:opacity-25"
+      style="background-image: radial-gradient(at 20% 30%, rgba(249,115,22,0.18), transparent 60%), radial-gradient(at 80% 20%, rgba(37,99,235,0.18), transparent 60%);"
+    >
+    </div>
+    <div class="mx-auto max-w-3xl px-6 pt-16 pb-10">
+      <a href="/posts/" class="inline-flex items-center gap-1 text-sm font-medium text-ink-500 hover:text-brand-600 dark:text-ink-400 dark:hover:text-brand-400">
+        ← All posts
+      </a>
+      <h1 class="mt-6 text-4xl font-bold leading-tight tracking-tight sm:text-5xl">{entry.data.title}</h1>
+      <p class="mt-4 text-lg text-ink-600 dark:text-ink-300">{entry.data.description}</p>
+      <p class="mt-6 flex items-center gap-3 text-sm text-ink-500 dark:text-ink-400">
+        <span class="font-medium text-ink-700 dark:text-ink-200">{entry.data.author}</span>
+        <span>·</span>
+        <span>
+          {entry.data.pubDate.toLocaleDateString('en-IN', { year: 'numeric', month: 'long', day: 'numeric' })}
+        </span>
+        <span>·</span>
+        <span>{rt}</span>
+      </p>
+    </div>
+  </section>
+
+  <article class="mx-auto max-w-3xl px-6 py-12">
+    <div class="prose prose-lg prose-slate dark:prose-invert">
+      <Content />
+    </div>
+
     <AssessmentCTA />
+
+    <Comments />
   </article>
 </BaseLayout>

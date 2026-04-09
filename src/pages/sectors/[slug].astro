@@ -1,7 +1,9 @@
 ---
 import BaseLayout from '@/layouts/BaseLayout.astro'
 import AssessmentCTA from '@/components/AssessmentCTA.astro'
+import Comments from '@/components/Comments.astro'
 import { getCollection, type CollectionEntry } from 'astro:content'
+import { readingTime } from '@/lib/readingTime'
 
 export async function getStaticPaths() {
   const sectors = await getCollection('sectors')
@@ -17,6 +19,17 @@ interface Props {
 
 const { entry } = Astro.props
 const { Content } = await entry.render()
+const rt = readingTime(entry.body)
+
+// Related sectors: up to 3 others, same collection, different slug.
+// Prefer ones whose tags overlap; fall back to the next in sector order.
+const allSectors = await getCollection('sectors', ({ data }) => !data.draft && data.sectorSlug !== entry.data.sectorSlug)
+const thisTags = new Set(entry.data.tags)
+const withOverlap = allSectors
+  .map((s) => ({ s, overlap: s.data.tags.filter((t) => thisTags.has(t)).length }))
+  .sort((a, b) => b.overlap - a.overlap || Number(a.s.data.sectorId.slice(1)) - Number(b.s.data.sectorId.slice(1)))
+  .slice(0, 3)
+  .map((x) => x.s)
 ---
 
 <BaseLayout
@@ -24,15 +37,71 @@ const { Content } = await entry.render()
   description={entry.data.description}
   canonical={entry.data.canonicalToApp}
 >
-  <article class="prose prose-slate max-w-none">
-    <p class="text-xs font-mono text-brand-600">
-      {entry.data.sectorId} · Sector guide
-    </p>
-    <h1 class="mt-2 text-4xl font-bold text-brand-900">{entry.data.title}</h1>
-    <p class="mt-2 text-lg text-slate-600">{entry.data.heroTagline}</p>
+  {/* Hero */}
+  <section class="relative overflow-hidden border-b border-ink-200 dark:border-ink-800">
+    <div
+      class="absolute inset-0 -z-10 opacity-60 dark:opacity-30"
+      style="background-image: radial-gradient(at 30% 20%, rgba(37,99,235,0.22), transparent 60%), radial-gradient(at 70% 40%, rgba(249,115,22,0.15), transparent 60%);"
+    >
+    </div>
+    <div class="mx-auto max-w-3xl px-6 pt-16 pb-12">
+      <a
+        href="/sectors/"
+        class="inline-flex items-center gap-1 text-sm font-medium text-ink-500 transition-colors hover:text-brand-600 dark:text-ink-400 dark:hover:text-brand-400"
+      >
+        ← All sectors
+      </a>
+      <div class="mt-6 flex flex-wrap items-center gap-3 text-xs">
+        <span class="rounded-full bg-brand-100 px-2.5 py-1 font-mono font-semibold text-brand-700 dark:bg-brand-950/60 dark:text-brand-300">
+          {entry.data.sectorId}
+        </span>
+        <span class="text-ink-500 dark:text-ink-400">Sector guide</span>
+        <span class="text-ink-400">·</span>
+        <span class="text-ink-500 dark:text-ink-400">{rt}</span>
+      </div>
+      <h1 class="mt-3 text-4xl font-bold leading-tight tracking-tight sm:text-5xl">
+        {entry.data.title}
+      </h1>
+      <p class="mt-4 text-xl text-ink-600 dark:text-ink-300">
+        {entry.data.heroTagline}
+      </p>
+    </div>
+  </section>
 
-    <Content />
+  {/* Body */}
+  <article class="mx-auto max-w-3xl px-6 py-12">
+    <div class="prose prose-lg prose-slate dark:prose-invert">
+      <Content />
+    </div>
 
     <AssessmentCTA sectorSlug={entry.data.sectorSlug} />
+
+    {/* Related sectors */}
+    {withOverlap.length > 0 && (
+      <section class="mt-16 border-t border-ink-200 pt-10 dark:border-ink-800">
+        <h2 class="text-sm font-semibold uppercase tracking-wider text-ink-500 dark:text-ink-400">
+          Related sectors
+        </h2>
+        <div class="mt-4 grid gap-4 sm:grid-cols-3">
+          {withOverlap.map((s) => (
+            <a
+              href={`/sectors/${s.data.sectorSlug}/`}
+              class="group block rounded-xl border border-ink-200 p-4 transition-colors hover:border-brand-500 dark:border-ink-800 dark:hover:border-brand-400"
+            >
+              <p class="text-[11px] font-mono text-ink-400 dark:text-ink-500">{s.data.sectorId}</p>
+              <h3 class="mt-1 text-sm font-bold group-hover:text-brand-600 dark:group-hover:text-brand-400">
+                {s.data.title}
+              </h3>
+              <p class="mt-1.5 line-clamp-2 text-xs text-ink-600 dark:text-ink-300">
+                {s.data.heroTagline}
+              </p>
+            </a>
+          ))}
+        </div>
+      </section>
+    )}
+
+    {/* Comments */}
+    <Comments />
   </article>
 </BaseLayout>

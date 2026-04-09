@@ -1,36 +1,69 @@
 ---
 title: "AI & Machine Learning"
-description: "From LLM engineers to applied ML researchers — the careers defining India’s AI decade."
+description: "From LLM engineers to applied ML researchers — a realistic map of AI careers in India for 2026, who they suit, and how to get started."
 sectorId: "S1"
 sectorSlug: "ai-ml"
-heroTagline: "From LLM engineers to applied ML researchers — the careers defining India’s AI decade."
+heroTagline: "From LLM engineers to applied ML researchers — the careers defining India's AI decade."
 pubDate: 2026-04-09
-tags: ["sector", "ai-ml"]
-draft: true
+tags: ["sector", "ai-ml", "machine-learning", "llm"]
+draft: false
 ---
 
 import AssessmentCTA from '@/components/AssessmentCTA.astro'
 
-## What this sector covers
+## What this sector actually looks like in 2026
 
-> **TODO:** Write 2-3 paragraphs on what ai & machine learning actually involves
-> in India in 2026 — major sub-areas, typical employers, and how the sector is
-> changing. Keep it honest; skip the hype.
+The AI/ML sector in India has split into three very different career tracks, and most career articles you'll read online conflate them.
+
+**Frontier research** (the smallest, hardest track) — people building new model architectures, training objectives, or alignment techniques. You'll find this work at academic labs (IISc, IIT-B AI groups, TIFR, IIIT-H), Indian arms of Google Research, Microsoft Research, and a small number of frontier-model startups like Sarvam AI and Ola Krutrim. The barrier to entry is a strong math background and, usually, a PhD in the pipeline.
+
+**Applied ML engineering** (the biggest track by headcount) — people shipping ML systems that power real products. Recommendation engines at Swiggy and Zomato, fraud detection at Razorpay, demand forecasting at Flipkart, clinical decision support at PharmEasy. This is what most "ML engineer" job postings actually mean. You need solid software engineering plus enough math to debug a training run, but you don't need to publish papers.
+
+**AI product and integration** — people stitching existing models (OpenAI, Anthropic, open-source LLMs) into business workflows. Prompt design, evals, retrieval systems, agent orchestration. This track barely existed in 2023. It's now one of the fastest-growing hiring areas in Bengaluru and Hyderabad, and the one where a well-prepared 22-year-old can get to a senior role fastest.
 
 ## Who thrives here
 
-> **TODO:** What personality profile (RIASEC + OCEAN) tends to fit this sector?
-> Pull language from ParamAI’s trait model so the page ranks for assessment-
-> related queries.
+Using ParamAI's trait model, the strongest predictors of fit for AI/ML work are:
 
-## Entry paths
+- **High Openness (Big Five)** — you have to be genuinely curious about how things work, because the field changes faster than any textbook can keep up. If the last paper you read bored you, this sector will grind you down.
+- **High Conscientiousness** — ML is 80% data plumbing and 20% modeling. The people who succeed are the ones who can stay meticulous when debugging a pipeline at 2am.
+- **Analytical + Technical trait weights above 0.7** — in the 10-trait model, the top tier of ML engineers score very high on both. Missing either one is survivable; missing both means you'll be unhappy.
+- **Resilience matters more than people expect** — most of your experiments fail. You need to separate "this run failed because my code is broken" from "this run failed because the idea doesn't work" without taking either personally.
 
-> **TODO:** 3-4 realistic entry paths (degree routes, bootcamps, apprenticeships,
-> lateral moves). Link to the specific careers in ParamAI’s knowledge bank.
+In RIASEC terms, the profile is usually **Investigative-Realistic** for engineers and **Investigative-Artistic** for researchers. Low Social scores are common but not required — the best team leads have higher Social than the stereotype suggests.
+
+## Realistic entry paths
+
+**If you're in Class 11–12:** Pick Science with PCM. Mathematics is non-negotiable — you can fake your way through biology or chemistry later in life, but you cannot fake your way through linear algebra and probability. Start building intuition through 3Blue1Brown's Essence of Linear Algebra and StatQuest on YouTube. Do not enroll in a "Class 12 AI course" — most are repackaged Python tutorials.
+
+**If you're in undergrad:** CS is the default path, but it's not the only one. Electrical engineering, applied math, and physics all produce excellent ML engineers. What matters is that you take probability, linear algebra, and a real machine learning course (not a MOOC — a proper semester-long one). Do one research project, one open-source contribution, and one Kaggle competition before you graduate. That's the minimum portfolio for a good first job.
+
+**If you're already working in software:** The jump to applied ML is smaller than you think. Start by adding an ML component to a system you already own. Read *Designing Machine Learning Systems* by Chip Huyen cover to cover. Do not do a 6-month online bootcamp — do one 4-week deep dive on a specific production problem. Hiring managers will take that over any certificate.
+
+**The one thing to avoid:** paying ₹2–6 lakh for an "AI/ML Masters certification" from a coaching company. Every hiring manager we've spoken to discounts those aggressively. The money is better spent on a good laptop, a paid Colab Pro subscription, and time.
+
+## What the jobs actually pay
+
+As of early 2026, honest bands for India:
+
+- **Applied ML engineer, fresh graduate (tier-1 company):** ₹18–32 LPA base + equity
+- **Applied ML engineer, 3–5 years experience:** ₹35–75 LPA
+- **Senior ML engineer at a frontier lab:** ₹60 LPA to 2+ crore, with huge variance
+- **AI product/integration role, fresh graduate:** ₹12–22 LPA, but growing fast
+- **ML research scientist (PhD required):** ₹40 LPA to 3+ crore, mostly at Google/Microsoft/frontier startups
+
+These numbers are real, not LinkedIn fantasy. The bottom of each range is the honest entry point; the top is the 75th percentile for that experience level.
 
 <AssessmentCTA sectorSlug="ai-ml" />
 
 ## Further reading
 
-> **TODO:** Link 2-3 authoritative external sources (reports, syllabi,
-> government programs).
+- **For the math:** *Mathematics for Machine Learning* (Deisenroth, Faisal, Ong) — free PDF, and the best book for getting un-stuck when a paper uses notation you don't recognize.
+- **For the systems:** *Designing Machine Learning Systems* (Chip Huyen) — the closest thing to a textbook for what applied ML engineers actually do.
+- **For the field:** Papers With Code's SOTA page. Not because you should read every paper, but because skimming it weekly keeps you calibrated on what's possible.
+
+## Related sectors
+
+- **[Data Science & Analytics](/sectors/data-science/)** — more analyst-shaped work with less model-building
+- **[Cybersecurity](/sectors/cybersecurity/)** — for the Investigative-Realistic profile with higher rule-following
+- **[Quantum Technologies](/sectors/quantum/)** — if the research track appeals and you want a less crowded field

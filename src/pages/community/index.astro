@@ -1,0 +1,90 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro'
+---
+
+<BaseLayout
+  title="Community | ParamAI Blog"
+  description="How the ParamAI Blog community works — who can join, what to post, and how we keep conversations safe."
+>
+  <section class="mx-auto max-w-3xl px-6 py-16">
+    <p class="text-xs font-semibold uppercase tracking-wider text-brand-600 dark:text-brand-400">
+      Community
+    </p>
+    <h1 class="mt-2 text-4xl font-bold tracking-tight sm:text-5xl">Share what you're learning.<br />Find people like you.</h1>
+    <p class="mt-6 text-lg text-ink-600 dark:text-ink-300">
+      Every post on this blog has a comments thread. That's our community for now — simple,
+      public, and moderated. It's where students share what they're thinking, ask the
+      questions their school counsellors can't answer, and connect with others exploring
+      the same sectors.
+    </p>
+
+    <div class="mt-12 space-y-10">
+      <div>
+        <h2 class="text-2xl font-bold">How it works</h2>
+        <ol class="mt-4 space-y-4 text-ink-700 dark:text-ink-200">
+          <li class="flex gap-4">
+            <span class="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-brand-600 text-sm font-bold text-white">1</span>
+            <div>
+              <strong>Read a sector page or post.</strong> Every sector guide ends with a
+              comment thread. You can also comment on general posts.
+            </div>
+          </li>
+          <li class="flex gap-4">
+            <span class="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-brand-600 text-sm font-bold text-white">2</span>
+            <div>
+              <strong>Sign in with GitHub.</strong> We use GitHub Discussions for comments
+              via <a href="https://giscus.app" class="text-brand-600 hover:underline dark:text-brand-400" rel="noopener">Giscus</a>. GitHub requires you to be 13+, and we require
+              you to be 16+. You don't need to code to have a GitHub account — it's free.
+            </div>
+          </li>
+          <li class="flex gap-4">
+            <span class="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-brand-600 text-sm font-bold text-white">3</span>
+            <div>
+              <strong>Post.</strong> Share what you're thinking, ask a question, tell us
+              what we got wrong, or connect with other students on the same thread.
+            </div>
+          </li>
+          <li class="flex gap-4">
+            <span class="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-brand-600 text-sm font-bold text-white">4</span>
+            <div>
+              <strong>Stay public and safe.</strong> Conversations live on the public
+              comment thread. No private messaging — that's a deliberate safety choice for
+              a mixed-age audience.
+            </div>
+          </li>
+        </ol>
+      </div>
+
+      <div>
+        <h2 class="text-2xl font-bold">What's good to post</h2>
+        <ul class="mt-4 list-disc space-y-2 pl-6 text-ink-700 dark:text-ink-200">
+          <li>Your own reflections on a sector — what surprised you, what you want to learn more about.</li>
+          <li>Questions. Especially ones your school counsellor couldn't answer.</li>
+          <li>Resources that actually helped you — books, YouTube channels, courses, tools.</li>
+          <li>Corrections. If we got something wrong, call it out. We'll update the post and credit you.</li>
+          <li>"I'm also interested in X, anyone want to talk about it?" — yes, please.</li>
+        </ul>
+      </div>
+
+      <div>
+        <h2 class="text-2xl font-bold">What's not OK</h2>
+        <p class="mt-4 text-ink-700 dark:text-ink-200">
+          We have explicit <a href="/community-guidelines/" class="text-brand-600 hover:underline dark:text-brand-400">community guidelines</a>.
+          The short version: no PII, no harassment, no hate, no spam, no political
+          flame wars, no scammy "I can get you into IIT for ₹2 lakh" pitches.
+          Violations get removed and the account reported to GitHub.
+        </p>
+      </div>
+
+      <div class="rounded-2xl border border-brand-200 bg-brand-50 p-6 dark:border-brand-500/30 dark:bg-brand-950/40">
+        <h2 class="text-xl font-bold">Coming soon</h2>
+        <p class="mt-2 text-ink-700 dark:text-ink-200">
+          We're planning a richer community with interest-based groups, profile
+          pages, and shareable reading lists. Building it carefully takes time —
+          getting safety right matters more than shipping fast. If you want to help
+          shape it, comment on any sector thread and let us know what you'd like.
+        </p>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

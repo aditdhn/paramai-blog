@@ -1,48 +1,239 @@
 ---
 import BaseLayout from '@/layouts/BaseLayout.astro'
-import AssessmentCTA from '@/components/AssessmentCTA.astro'
 import { getCollection } from 'astro:content'
+import { APP_URL } from '@/consts'
 
 const sectors = (await getCollection('sectors', ({ data }) => !data.draft)).sort(
   (a, b) => Number(a.data.sectorId.slice(1)) - Number(b.data.sectorId.slice(1)),
 )
+
+const posts = (await getCollection('posts', ({ data }) => !data.draft)).sort(
+  (a, b) => b.data.pubDate.getTime() - a.data.pubDate.getTime(),
+)
+
+// Stats shown in the hero strip. Keep these honest — they match what
+// src/backend/data/knowledge_bank + the engine actually produce.
+const stats = [
+  { value: '930+', label: 'Real careers' },
+  { value: '41', label: 'Sectors' },
+  { value: '388', label: 'Diagnostic questions' },
+  { value: '15 min', label: 'To a first result' },
+]
+
+// Accent color + single emoji glyph per sector for visual variety.
+// Keyed by sectorSlug — if a sector isn't in the map, we fall back to a neutral style.
+const sectorVisuals: Record<string, { glyph: string; color: string }> = {
+  'ai-ml': { glyph: '🧠', color: 'from-violet-500 to-fuchsia-500' },
+  'data-science': { glyph: '📊', color: 'from-sky-500 to-cyan-500' },
+  'cloud-devops': { glyph: '☁️', color: 'from-blue-500 to-indigo-500' },
+  'cybersecurity': { glyph: '🛡️', color: 'from-rose-500 to-orange-500' },
+  'software-engineering': { glyph: '💻', color: 'from-emerald-500 to-teal-500' },
+  'fintech': { glyph: '💳', color: 'from-amber-500 to-yellow-500' },
+  'biotech': { glyph: '🧬', color: 'from-green-500 to-lime-500' },
+  'renewable-energy': { glyph: '🌱', color: 'from-lime-500 to-green-500' },
+  'health-tech': { glyph: '🩺', color: 'from-rose-500 to-pink-500' },
+  'space-tech': { glyph: '🚀', color: 'from-indigo-500 to-purple-500' },
+  'quantum': { glyph: '⚛️', color: 'from-purple-500 to-violet-500' },
+  'advanced-manufacturing': { glyph: '🏭', color: 'from-slate-500 to-zinc-500' },
+  'agritech': { glyph: '🌾', color: 'from-yellow-500 to-amber-500' },
+  'edtech': { glyph: '📚', color: 'from-blue-500 to-cyan-500' },
+  'creative-tech-media-entertainment': { glyph: '🎬', color: 'from-pink-500 to-rose-500' },
+  'legal-tech-compliance': { glyph: '⚖️', color: 'from-stone-500 to-neutral-500' },
+  'smart-cities-urban-tech': { glyph: '🏙️', color: 'from-sky-500 to-blue-500' },
+  'logistics-scm-ecommerce': { glyph: '🚚', color: 'from-orange-500 to-red-500' },
+  'mental-health-wellness': { glyph: '🧘', color: 'from-teal-500 to-emerald-500' },
+  'tourism-hospitality': { glyph: '🌍', color: 'from-cyan-500 to-teal-500' },
+  'healthcare-clinical': { glyph: '⚕️', color: 'from-red-500 to-rose-500' },
+  'nuclear-advanced-energy': { glyph: '☢️', color: 'from-yellow-500 to-orange-500' },
+  'defence-tech': { glyph: '🎯', color: 'from-gray-600 to-slate-600' },
+  'neuroscience-cognitive': { glyph: '🧩', color: 'from-fuchsia-500 to-pink-500' },
+  'marine-ocean-water': { glyph: '🌊', color: 'from-blue-500 to-sky-500' },
+  'hr-tech-future-of-work': { glyph: '👥', color: 'from-indigo-500 to-blue-500' },
+  'real-estate-proptech': { glyph: '🏠', color: 'from-amber-600 to-orange-600' },
+  'sports-science-tech': { glyph: '⚽', color: 'from-green-600 to-emerald-600' },
+  'fashion-tech-retail': { glyph: '👗', color: 'from-pink-500 to-fuchsia-500' },
+  'psychology-behavioral-econ': { glyph: '🧠', color: 'from-purple-500 to-indigo-500' },
+  'international-dev-ngo': { glyph: '🤝', color: 'from-teal-600 to-cyan-600' },
+  'hybrid-crossdisciplinary': { glyph: '🔀', color: 'from-violet-500 to-purple-500' },
+  'govtech-public-admin': { glyph: '🏛️', color: 'from-blue-600 to-indigo-600' },
+  'media-journalism': { glyph: '📰', color: 'from-slate-600 to-stone-600' },
+  'automotive-mobility': { glyph: '🚗', color: 'from-red-600 to-orange-600' },
+  'chemicals-materials-nano': { glyph: '⚗️', color: 'from-emerald-500 to-green-500' },
+  'entrepreneurship-vc': { glyph: '💡', color: 'from-yellow-400 to-amber-500' },
+  'language-culture': { glyph: '🗣️', color: 'from-rose-500 to-pink-500' },
+  'south-asia-frontier': { glyph: '🌏', color: 'from-orange-500 to-amber-500' },
+  'skilled-trades': { glyph: '🔧', color: 'from-stone-600 to-zinc-600' },
+  'business-sales-management': { glyph: '📈', color: 'from-blue-500 to-cyan-500' },
+}
+const fallbackVisual = { glyph: '✨', color: 'from-brand-500 to-brand-700' }
 ---
 
 <BaseLayout
   title="ParamAI Blog — Career guidance, assessment science, 930+ real careers"
-  description="Explore 41 career sectors, read the research behind ParamAI’s AI assessment, and find your best-fit career path."
+  description="Explore 41 career sectors, read the research behind ParamAI's AI assessment, and find your best-fit career path."
 >
-  <section class="text-center">
-    <p class="text-sm font-semibold uppercase tracking-wide text-brand-600">
-      ParamAI Blog
-    </p>
-    <h1 class="mt-2 text-4xl font-bold text-brand-900 sm:text-5xl">
-      Your map to 930+ real careers.
-    </h1>
-    <p class="mx-auto mt-4 max-w-xl text-lg text-slate-600">
-      Honest, research-backed writing on career discovery, assessment science,
-      and the 41 sectors powering India’s next decade of work.
-    </p>
+  {/* Hero */}
+  <section class="relative overflow-hidden">
+    {/* Animated gradient background */}
+    <div
+      class="absolute inset-0 -z-10 bg-[length:200%_200%] opacity-80 dark:opacity-40 animate-gradient-shift"
+      style="background-image: radial-gradient(at 20% 20%, rgba(37,99,235,0.18), transparent 60%), radial-gradient(at 80% 30%, rgba(249,115,22,0.18), transparent 60%), radial-gradient(at 50% 80%, rgba(139,92,246,0.15), transparent 60%);"
+    >
+    </div>
+
+    <div class="mx-auto max-w-5xl px-6 pt-20 pb-16 sm:pt-28 sm:pb-24 text-center">
+      <p class="animate-fade-in-up inline-flex items-center gap-2 rounded-full border border-brand-200 bg-brand-50/80 px-3 py-1 text-xs font-semibold uppercase tracking-wider text-brand-700 dark:border-brand-500/30 dark:bg-brand-950/40 dark:text-brand-300">
+        <span class="inline-block h-1.5 w-1.5 animate-pulse-slow rounded-full bg-brand-500"></span>
+        Career guidance, backed by research
+      </p>
+      <h1 class="animate-fade-in-up mt-5 text-5xl font-bold leading-[1.05] tracking-tight sm:text-6xl md:text-7xl">
+        Your map to{' '}
+        <span class="bg-gradient-to-r from-brand-600 via-brand-500 to-accent-500 bg-clip-text text-transparent">
+          930+ real careers.
+        </span>
+      </h1>
+      <p class="animate-fade-in-up mx-auto mt-6 max-w-2xl text-lg text-ink-600 sm:text-xl dark:text-ink-300">
+        Honest, research-backed writing on career discovery, assessment
+        science, and the 41 sectors powering India's next decade of work.
+        Built by the team behind <a href={APP_URL} class="font-semibold text-brand-600 hover:underline dark:text-brand-400" rel="noopener">paramai.in</a>.
+      </p>
+
+      <div class="animate-fade-in-up mt-10 flex flex-wrap items-center justify-center gap-3">
+        <a
+          href={APP_URL + '/assessment?utm_source=blog&utm_medium=hero&utm_campaign=home'}
+          class="inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-brand-600 to-brand-500 px-6 py-3 text-sm font-semibold text-white shadow-lg shadow-brand-600/30 transition-all hover:shadow-xl hover:shadow-brand-600/45"
+          rel="noopener"
+        >
+          Take the free assessment →
+        </a>
+        <a
+          href="/sectors/"
+          class="inline-flex items-center gap-2 rounded-full border border-ink-300 bg-white px-6 py-3 text-sm font-semibold text-ink-700 transition-colors hover:border-brand-500 hover:text-brand-600 dark:border-ink-700 dark:bg-ink-900 dark:text-ink-200 dark:hover:border-brand-400 dark:hover:text-brand-400"
+        >
+          Browse sectors
+        </a>
+      </div>
+
+      {/* Stats strip */}
+      <div class="animate-fade-in-up mt-16 grid grid-cols-2 gap-4 sm:grid-cols-4">
+        {stats.map((s) => (
+          <div class="rounded-2xl border border-ink-200/70 bg-white/60 p-4 text-center backdrop-blur dark:border-ink-800/70 dark:bg-ink-900/60">
+            <div class="text-3xl font-bold text-brand-600 dark:text-brand-400">{s.value}</div>
+            <div class="mt-1 text-xs font-medium uppercase tracking-wider text-ink-500 dark:text-ink-400">
+              {s.label}
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
   </section>
 
-  <AssessmentCTA />
+  {/* Featured posts */}
+  {posts.length > 0 && (
+    <section class="mx-auto max-w-6xl px-6 py-16">
+      <div class="flex items-end justify-between">
+        <div>
+          <p class="text-xs font-semibold uppercase tracking-wider text-accent-600 dark:text-accent-400">
+            Latest posts
+          </p>
+          <h2 class="mt-1 text-3xl font-bold tracking-tight">Writing worth reading</h2>
+        </div>
+        <a href="/posts/" class="hidden text-sm font-medium text-brand-600 hover:underline dark:text-brand-400 sm:inline">
+          See all posts →
+        </a>
+      </div>
 
-  <section class="mt-12">
-    <h2 class="text-2xl font-bold text-brand-900">Explore by sector</h2>
-    <ul class="mt-6 grid gap-4 sm:grid-cols-2">
-      {
-        sectors.map((sector) => (
-          <li class="rounded-xl border border-slate-200 p-5 hover:border-brand-500">
-            <a href={`/sectors/${sector.data.sectorSlug}/`} class="block">
-              <p class="text-xs font-mono text-brand-600">{sector.data.sectorId}</p>
-              <h3 class="mt-1 text-lg font-semibold text-brand-900">
-                {sector.data.title}
-              </h3>
-              <p class="mt-1 text-sm text-slate-600">{sector.data.heroTagline}</p>
-            </a>
-          </li>
-        ))
-      }
-    </ul>
+      <div class="mt-8 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+        {posts.slice(0, 3).map((p) => (
+          <a
+            href={`/posts/${p.slug}/`}
+            class="group flex flex-col rounded-2xl border border-ink-200 bg-white p-6 transition-all hover:-translate-y-0.5 hover:border-brand-500 hover:shadow-lg dark:border-ink-800 dark:bg-ink-900 dark:hover:border-brand-400"
+          >
+            <p class="text-xs font-medium uppercase tracking-wider text-ink-500 dark:text-ink-400">
+              {p.data.pubDate.toLocaleDateString('en-IN', { year: 'numeric', month: 'long', day: 'numeric' })}
+            </p>
+            <h3 class="mt-2 text-lg font-bold leading-snug group-hover:text-brand-600 dark:group-hover:text-brand-400">
+              {p.data.title}
+            </h3>
+            <p class="mt-2 flex-1 text-sm text-ink-600 dark:text-ink-300">
+              {p.data.description}
+            </p>
+            <span class="mt-4 text-sm font-semibold text-brand-600 dark:text-brand-400">Read →</span>
+          </a>
+        ))}
+      </div>
+    </section>
+  )}
+
+  {/* Sector grid */}
+  <section class="mx-auto max-w-6xl px-6 py-16">
+    <div class="flex items-end justify-between">
+      <div>
+        <p class="text-xs font-semibold uppercase tracking-wider text-accent-600 dark:text-accent-400">
+          Explore sectors
+        </p>
+        <h2 class="mt-1 text-3xl font-bold tracking-tight">All 41 career sectors</h2>
+      </div>
+      <a href="/sectors/" class="hidden text-sm font-medium text-brand-600 hover:underline dark:text-brand-400 sm:inline">
+        See the full list →
+      </a>
+    </div>
+
+    <div class="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+      {sectors.map((sector) => {
+        const visual = sectorVisuals[sector.data.sectorSlug] ?? fallbackVisual
+        return (
+          <a
+            href={`/sectors/${sector.data.sectorSlug}/`}
+            class="group relative overflow-hidden rounded-2xl border border-ink-200 bg-white p-5 transition-all hover:-translate-y-0.5 hover:border-brand-500 hover:shadow-lg dark:border-ink-800 dark:bg-ink-900 dark:hover:border-brand-400"
+          >
+            <div class="flex items-start gap-4">
+              <div class={`flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br ${visual.color} text-2xl shadow-md`}>
+                {visual.glyph}
+              </div>
+              <div class="min-w-0 flex-1">
+                <div class="flex items-center gap-2">
+                  <p class="text-[11px] font-mono uppercase tracking-wider text-ink-400 dark:text-ink-500">
+                    {sector.data.sectorId}
+                  </p>
+                </div>
+                <h3 class="mt-1 text-base font-bold leading-snug group-hover:text-brand-600 dark:group-hover:text-brand-400">
+                  {sector.data.title}
+                </h3>
+                <p class="mt-1.5 line-clamp-2 text-sm text-ink-600 dark:text-ink-300">
+                  {sector.data.heroTagline}
+                </p>
+              </div>
+            </div>
+          </a>
+        )
+      })}
+    </div>
+  </section>
+
+  {/* Community invite */}
+  <section class="mx-auto max-w-4xl px-6 py-16">
+    <div class="relative overflow-hidden rounded-3xl border border-brand-200 bg-gradient-to-br from-brand-50 via-white to-accent-50 p-8 sm:p-12 dark:border-brand-500/30 dark:from-brand-950/40 dark:via-ink-950 dark:to-accent-950/20">
+      <div class="absolute -right-20 -top-20 h-64 w-64 rounded-full bg-gradient-to-br from-brand-400/20 to-accent-400/20 blur-3xl"></div>
+      <p class="text-xs font-semibold uppercase tracking-wider text-brand-700 dark:text-brand-300">
+        For students, by students (+ researchers)
+      </p>
+      <h2 class="mt-2 text-3xl font-bold tracking-tight sm:text-4xl">
+        Share what you're learning.<br />Find people like you.
+      </h2>
+      <p class="mt-4 max-w-xl text-ink-600 dark:text-ink-300">
+        Every post has a comments thread where you can share your take,
+        ask questions, or connect with students exploring the same sectors.
+        Moderated, safe, and free.
+      </p>
+      <div class="mt-6 flex flex-wrap gap-3">
+        <a href="/community/" class="inline-flex items-center gap-2 rounded-full bg-brand-600 px-5 py-2.5 text-sm font-semibold text-white hover:bg-brand-700">
+          How the community works →
+        </a>
+        <a href="/community-guidelines/" class="inline-flex items-center gap-2 rounded-full border border-ink-300 bg-white px-5 py-2.5 text-sm font-semibold text-ink-700 hover:border-brand-500 hover:text-brand-600 dark:border-ink-700 dark:bg-ink-900 dark:text-ink-200 dark:hover:border-brand-400 dark:hover:text-brand-400">
+          Community guidelines
+        </a>
+      </div>
+    </div>
   </section>
 </BaseLayout>

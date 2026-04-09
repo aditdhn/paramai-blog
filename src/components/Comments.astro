@@ -1,0 +1,87 @@
+---
+/**
+ * Giscus-powered comments, scoped to our GitHub Discussions.
+ *
+ * Setup (one-time, by repo owner):
+ *   1. Install giscus app on aditdhn/paramai-blog:
+ *      https://github.com/apps/giscus
+ *   2. Enable Discussions on the repo (Settings → Features → Discussions)
+ *   3. Create a "Blog Comments" category (type: Announcement)
+ *   4. Go to https://giscus.app, enter aditdhn/paramai-blog, pick the category,
+ *      and copy the data-repo-id / data-category-id into the values below.
+ *
+ * The component ships with placeholders tagged TODO so we can still build and
+ * deploy the site; when the owner pastes the real IDs, Giscus lights up.
+ *
+ * Giscus uses GitHub OAuth, which requires a GitHub account (age 13+ per
+ * GitHub's ToS). Combined with our own 16+ notice, this is our age gate.
+ */
+const {
+  repo = 'aditdhn/paramai-blog',
+  // TODO(owner): paste real IDs from https://giscus.app after enabling Discussions.
+  repoId = 'REPLACE_WITH_REPO_ID',
+  category = 'Blog Comments',
+  categoryId = 'REPLACE_WITH_CATEGORY_ID',
+  mapping = 'pathname',
+} = Astro.props
+---
+
+<section class="mt-16 rounded-2xl border border-ink-200 bg-ink-50/50 p-6 dark:border-ink-800 dark:bg-ink-900/50">
+  <div class="mb-5 flex flex-wrap items-center justify-between gap-3">
+    <div>
+      <h2 class="text-xl font-bold">Join the conversation</h2>
+      <p class="mt-1 text-sm text-ink-600 dark:text-ink-300">
+        Share what you're thinking, ask a question, or tell us what we got
+        wrong. Comments are powered by GitHub Discussions.
+      </p>
+    </div>
+    <a
+      href="/community-guidelines/"
+      class="inline-flex items-center gap-1.5 rounded-full border border-ink-300 bg-white px-3 py-1.5 text-xs font-medium text-ink-700 hover:border-brand-500 hover:text-brand-600 dark:border-ink-700 dark:bg-ink-900 dark:text-ink-200 dark:hover:border-brand-400 dark:hover:text-brand-400"
+    >
+      Community guidelines
+    </a>
+  </div>
+
+  {/* Safety banner — visible before the comments load */}
+  <div
+    role="note"
+    class="mb-6 rounded-xl border border-amber-300/60 bg-amber-50 p-4 text-sm text-amber-900 dark:border-amber-500/40 dark:bg-amber-950/40 dark:text-amber-200"
+  >
+    <p class="font-semibold">Before you post:</p>
+    <ul class="mt-1.5 list-disc space-y-1 pl-5">
+      <li>You must be <strong>16 or older</strong> to comment.</li>
+      <li>
+        Never share personal info — phone, email, address, school name,
+        full name. Keep conversations public.
+      </li>
+      <li>
+        Be kind. Harassment, hate, and spam get removed and reported.
+      </li>
+      <li>
+        See something that breaks these rules? Use the <strong>Report</strong>
+        button next to any comment or email
+        <a href="mailto:grievance@paramai.in" class="underline hover:no-underline">grievance@paramai.in</a>.
+      </li>
+    </ul>
+  </div>
+
+  <script
+    is:inline
+    src="https://giscus.app/client.js"
+    data-repo={repo}
+    data-repo-id={repoId}
+    data-category={category}
+    data-category-id={categoryId}
+    data-mapping={mapping}
+    data-strict="1"
+    data-reactions-enabled="1"
+    data-emit-metadata="0"
+    data-input-position="bottom"
+    data-theme="preferred_color_scheme"
+    data-lang="en"
+    data-loading="lazy"
+    crossorigin="anonymous"
+    async
+  ></script>
+</section>
