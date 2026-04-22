@@ -1,0 +1,18 @@
+version: 2
+updates:
+  - package-ecosystem: "npm"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    open-pull-requests-limit: 5
+    ignore:
+      # Astro v6 bumps broke the Vercel build once already (see PR #4):
+      # @astrojs/tailwind@^6 peer-requires astro@^3||^4||^5, and
+      # @astrojs/mdx@^4 peer-requires astro@^5. Block major bumps of
+      # the Astro ecosystem until those integrations support v6, then
+      # revisit as a coordinated upgrade (mdx@^5 + drop @astrojs/tailwind
+      # in favor of @tailwindcss/vite).
+      - dependency-name: "astro"
+        update-types: ["version-update:semver-major"]
+      - dependency-name: "@astrojs/*"
+        update-types: ["version-update:semver-major"]
