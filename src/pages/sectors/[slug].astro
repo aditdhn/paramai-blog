@@ -6,7 +6,10 @@ import { getCollection, type CollectionEntry } from 'astro:content'
 import { readingTime } from '@/lib/readingTime'
 
 export async function getStaticPaths() {
-  const sectors = await getCollection('sectors')
+  // Skip drafts so stub pages aren't built, sitemapped, or crawled by Google —
+  // they share near-identical TODO boilerplate and get clustered by Google's
+  // duplicate detection as "Alternative page with proper canonical tag".
+  const sectors = await getCollection('sectors', ({ data }) => !data.draft)
   return sectors.map((entry) => ({
     params: { slug: entry.data.sectorSlug },
     props: { entry },
