@@ -16,3 +16,10 @@ updates:
         update-types: ["version-update:semver-major"]
       - dependency-name: "@astrojs/*"
         update-types: ["version-update:semver-major"]
+      # tailwindcss v4 is incompatible with @astrojs/tailwind@^6 (peer-requires
+      # tailwindcss@^3). Block major bumps until the @tailwindcss/vite migration
+      # is done as a coordinated upgrade alongside dropping @astrojs/tailwind.
+      - dependency-name: "tailwindcss"
+        update-types: ["version-update:semver-major"]
+      - dependency-name: "@tailwindcss/*"
+        update-types: ["version-update:semver-major"]
