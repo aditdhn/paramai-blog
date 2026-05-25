@@ -2,13 +2,13 @@
 import BaseLayout from '@/layouts/BaseLayout.astro'
 import AssessmentCTA from '@/components/AssessmentCTA.astro'
 import Comments from '@/components/Comments.astro'
-import { getCollection, type CollectionEntry } from 'astro:content'
+import { getCollection, render, type CollectionEntry } from 'astro:content'
 import { readingTime } from '@/lib/readingTime'
 
 export async function getStaticPaths() {
   const posts = await getCollection('posts')
   return posts.map((entry) => ({
-    params: { slug: entry.slug },
+    params: { slug: entry.id },
     props: { entry },
   }))
 }
@@ -18,8 +18,8 @@ interface Props {
 }
 
 const { entry } = Astro.props
-const { Content } = await entry.render()
-const rt = readingTime(entry.body)
+const { Content } = await render(entry)
+const rt = readingTime(entry.body ?? '')
 ---
 
 <BaseLayout title={`${entry.data.title} | ParamAI™ Blog`} description={entry.data.description}>
