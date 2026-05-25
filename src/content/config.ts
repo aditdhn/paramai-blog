@@ -11,7 +11,7 @@ const sectors = defineCollection({
     heroTagline: z.string(),
     pubDate: z.coerce.date(),
     updatedDate: z.coerce.date().optional(),
-    author: z.string().default('ParamAI Research'),
+    author: z.string().default('ParamAI™ Research'),
     tags: z.array(z.string()).default([]),
     draft: z.boolean().default(false),
     // If true, a rel=canonical pointing back to paramai.in equivalent is emitted.
@@ -27,7 +27,7 @@ const posts = defineCollection({
     description: z.string(),
     pubDate: z.coerce.date(),
     updatedDate: z.coerce.date().optional(),
-    author: z.string().default('ParamAI Research'),
+    author: z.string().default('ParamAI™ Research'),
     tags: z.array(z.string()).default([]),
     draft: z.boolean().default(false),
   }),
