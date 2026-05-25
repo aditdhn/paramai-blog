@@ -1,0 +1,320 @@
+# Instincts generated from https://github.com/aditdhn/paramai-blog
+# Generated: 2026-05-25T15:08:24.489Z
+# Version: 2.0
+# NOTE: This file supplements (does not replace) any existing curated instincts.
+# High-confidence manually curated instincts should be preserved alongside these.
+
+---
+id: paramai-blog-commit-length
+trigger: "when writing a commit message"
+confidence: 0.6
+domain: git
+source: repo-analysis
+source_repo: https://github.com/aditdhn/paramai-blog
+---
+
+# Paramai Blog Commit Length
+
+## Action
+
+Write moderate-length commit messages (~68 characters)
+
+## Evidence
+
+- Average commit message length: 68 chars
+- Based on 1 commits
+
+---
+id: paramai-blog-naming-files
+trigger: "when creating a new file"
+confidence: 0.8
+domain: code-style
+source: repo-analysis
+source_repo: https://github.com/aditdhn/paramai-blog
+---
+
+# Paramai Blog Naming Files
+
+## Action
+
+Use kebab-case naming convention
+
+## Evidence
+
+- Analyzed file naming patterns in repository
+- Dominant pattern: kebab-case
+
+---
+id: paramai-blog-import-relative
+trigger: "when importing modules"
+confidence: 0.75
+domain: code-style
+source: repo-analysis
+source_repo: https://github.com/aditdhn/paramai-blog
+---
+
+# Paramai Blog Import Relative
+
+## Action
+
+Use relative imports for project files
+
+## Evidence
+
+- Import analysis shows relative import pattern
+- Example: import { x } from '../lib/x'
+
+---
+id: paramai-blog-export-style
+trigger: "when exporting from a module"
+confidence: 0.7
+domain: code-style
+source: repo-analysis
+source_repo: https://github.com/aditdhn/paramai-blog
+---
+
+# Paramai Blog Export Style
+
+## Action
+
+Prefer named exports
+
+## Evidence
+
+- Export pattern analysis
+- Dominant style: named
+
+---
+id: paramai-blog-arch-type-based
+trigger: "when adding new code"
+confidence: 0.8
+domain: architecture
+source: repo-analysis
+source_repo: https://github.com/aditdhn/paramai-blog
+---
+
+# Paramai Blog Arch Type Based
+
+## Action
+
+Place code in the appropriate type folder (components/, services/, utils/, etc.)
+
+## Evidence
+
+- Type-based module organization detected
+- Folders: components, content, layouts, pages
+
+---
+id: paramai-blog-test-separate
+trigger: "when writing tests"
+confidence: 0.8
+domain: testing
+source: repo-analysis
+source_repo: https://github.com/aditdhn/paramai-blog
+---
+
+# Paramai Blog Test Separate
+
+## Action
+
+Place tests in the tests/ or __tests__/ directory, mirroring src structure
+
+## Evidence
+
+- Separate test directory pattern detected
+- Tests live in dedicated test folders
+
+---
+id: paramai-blog-instinct-file-naming
+trigger: "When creating a new file"
+confidence: 0.9
+domain: code-style
+source: repo-analysis
+source_repo: aditdhn/paramai-blog
+---
+
+# Paramai Blog Instinct File Naming
+
+## Action
+
+Name the file using kebab-case
+
+## Evidence
+
+- Pattern in namingConventions.files
+
+---
+id: paramai-blog-instinct-function-naming
+trigger: "When defining a new function"
+confidence: 0.9
+domain: code-style
+source: repo-analysis
+source_repo: aditdhn/paramai-blog
+---
+
+# Paramai Blog Instinct Function Naming
+
+## Action
+
+Name the function using camelCase
+
+## Evidence
+
+- Pattern in namingConventions.functions
+
+---
+id: paramai-blog-instinct-class-naming
+trigger: "When defining a new class"
+confidence: 0.9
+domain: code-style
+source: repo-analysis
+source_repo: aditdhn/paramai-blog
+---
+
+# Paramai Blog Instinct Class Naming
+
+## Action
+
+Name the class using PascalCase
+
+## Evidence
+
+- Pattern in namingConventions.classes
+
+---
+id: paramai-blog-instinct-constant-naming
+trigger: "When declaring a constant"
+confidence: 0.9
+domain: code-style
+source: repo-analysis
+source_repo: aditdhn/paramai-blog
+---
+
+# Paramai Blog Instinct Constant Naming
+
+## Action
+
+Name the constant using SCREAMING_SNAKE_CASE
+
+## Evidence
+
+- Pattern in namingConventions.constants
+
+---
+id: paramai-blog-instinct-import-style
+trigger: "When importing modules"
+confidence: 0.9
+domain: code-style
+source: repo-analysis
+source_repo: aditdhn/paramai-blog
+---
+
+# Paramai Blog Instinct Import Style
+
+## Action
+
+Use relative import paths
+
+## Evidence
+
+- Pattern in importStyle
+
+---
+id: paramai-blog-instinct-export-style
+trigger: "When exporting modules or functions"
+confidence: 0.9
+domain: code-style
+source: repo-analysis
+source_repo: aditdhn/paramai-blog
+---
+
+# Paramai Blog Instinct Export Style
+
+## Action
+
+Use named exports
+
+## Evidence
+
+- Pattern in exportStyle
+
+---
+id: paramai-blog-instinct-typescript
+trigger: "When writing code"
+confidence: 0.9
+domain: code-style
+source: repo-analysis
+source_repo: aditdhn/paramai-blog
+---
+
+# Paramai Blog Instinct Typescript
+
+## Action
+
+Use TypeScript as the programming language
+
+## Evidence
+
+- Pattern in language
+
+---
+id: paramai-blog-instinct-folder-structure
+trigger: "When adding new features or components"
+confidence: 0.8
+domain: architecture
+source: repo-analysis
+source_repo: aditdhn/paramai-blog
+---
+
+# Paramai Blog Instinct Folder Structure
+
+## Action
+
+Place code in the appropriate type-based folder (components, content, layouts, pages) under src
+
+## Evidence
+
+- Pattern in srcLayout
+- Pattern in folderStructure
+
+---
+id: paramai-blog-instinct-test-location
+trigger: "When adding or updating tests"
+confidence: 0.8
+domain: testing
+source: repo-analysis
+source_repo: aditdhn/paramai-blog
+---
+
+# Paramai Blog Instinct Test Location
+
+## Action
+
+Place tests in a separate folder from the main code
+
+## Evidence
+
+- Pattern in testLocation
+
+---
+id: paramai-blog-instinct-commit-format
+trigger: "When writing a commit message"
+confidence: 0.8
+domain: git
+source: repo-analysis
+source_repo: aditdhn/paramai-blog
+---
+
+# Paramai Blog Instinct Commit Format
+
+## Action
+
+Write a freeform commit message without a prefix, typically under 70 characters
+
+## Evidence
+
+- Pattern in commits.type
+- Pattern in commits.prefixes
+- Pattern in commits.averageLength
+- Example: 'Add ™ trademark symbol to all user-visible Param AI brand references'
+
