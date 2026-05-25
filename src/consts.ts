@@ -1,7 +1,7 @@
 // Site-wide constants. Kept in one place so branding/CTA changes don't require touching every layout.
-export const SITE_TITLE = ‘ParamAI™ Blog’
+export const SITE_TITLE = 'ParamAI™ Blog'
 export const SITE_DESCRIPTION =
-  ‘Career guidance, assessment science, and student success stories from ParamAI™ — India’s AI-powered career discovery platform.’
+  'Career guidance, assessment science, and student success stories from ParamAI™ — India’s AI-powered career discovery platform.'
 export const SITE_URL = 'https://paramai.blog'
 
 // The actual product lives here. Every post CTAs to this URL.
