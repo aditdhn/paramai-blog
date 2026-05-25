@@ -35,7 +35,7 @@ const currentPath = Astro.url.pathname
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonicalURL} />
     <meta property="og:image" content={new URL(ogImage, SITE_URL).toString()} />
-    <meta property="og:site_name" content="ParamAI Blog" />
+    <meta property="og:site_name" content="ParamAI™ Blog" />
 
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content={title} />
@@ -72,7 +72,7 @@ const currentPath = Astro.url.pathname
           >
             P
           </span>
-          <span class="text-ink-900 dark:text-ink-50">ParamAI Blog</span>
+          <span class="text-ink-900 dark:text-ink-50">ParamAI<sup>™</sup> Blog</span>
         </a>
 
         <nav class="flex items-center gap-1 text-sm font-medium sm:gap-2">
@@ -137,7 +137,7 @@ const currentPath = Astro.url.pathname
               <span class="inline-flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br from-brand-600 to-accent-500 text-white">
                 P
               </span>
-              <span class="text-lg font-bold">ParamAI Blog</span>
+              <span class="text-lg font-bold">ParamAI<sup>™</sup> Blog</span>
             </div>
             <p class="mt-3 max-w-md text-sm text-ink-600 dark:text-ink-300">
               Honest, research-backed writing on career discovery, assessment
@@ -168,7 +168,7 @@ const currentPath = Astro.url.pathname
         </div>
 
         <div class="mt-10 flex flex-col items-center justify-between gap-3 border-t border-ink-200/70 pt-6 text-xs text-ink-500 md:flex-row dark:border-ink-800/70">
-          <p>&copy; {new Date().getFullYear()} ParamAI. Made in India, for the world.</p>
+          <p>&copy; {new Date().getFullYear()} ParamAI™. Made in India, for the world.</p>
           <p>
             Assessment at
             <a href={APP_URL} class="font-medium text-brand-600 hover:underline dark:text-brand-400" rel="noopener">paramai.in</a>

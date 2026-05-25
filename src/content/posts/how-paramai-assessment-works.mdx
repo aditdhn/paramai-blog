@@ -1,21 +1,21 @@
 ---
-title: "How the ParamAI assessment actually works"
+title: "How the ParamAI™ assessment actually works"
 description: "No hype, no magic. A plain-language walkthrough of the psychometric engine under paramai.in — RIASEC, OCEAN, adaptive questioning, and how 388 items turn into 930+ career matches."
 pubDate: 2026-04-09
 tags: ["assessment", "science", "riasec", "ocean", "meta"]
-author: "ParamAI Research"
+author: "ParamAI™ Research"
 draft: false
 ---
 
 import AssessmentCTA from '@/components/AssessmentCTA.astro'
 
-The internet is full of "career tests" that give you an answer in 5 questions and a lot of fireworks. Most of them are personality quizzes dressed up as science. We built ParamAI because students in India deserve better than that — and because we got frustrated with watching smart 17-year-olds pick streams based on a BuzzFeed-grade result.
+The internet is full of "career tests" that give you an answer in 5 questions and a lot of fireworks. Most of them are personality quizzes dressed up as science. We built ParamAI™ because students in India deserve better than that — and because we got frustrated with watching smart 17-year-olds pick streams based on a BuzzFeed-grade result.
 
-This post is an honest walkthrough of what actually happens when you take the ParamAI assessment. No marketing voice. If you're a student, parent, school counsellor, or a researcher curious about the engineering, this is the post to read.
+This post is an honest walkthrough of what actually happens when you take the ParamAI™ assessment. No marketing voice. If you're a student, parent, school counsellor, or a researcher curious about the engineering, this is the post to read.
 
 ## The two-model approach
 
-Most career tests use one of two psychometric frameworks. ParamAI uses both, on purpose.
+Most career tests use one of two psychometric frameworks. ParamAI™ uses both, on purpose.
 
 **RIASEC** (Holland's theory, 1959 onward) is the most widely-used career interest framework in the world. It categorises people and jobs along six dimensions: **Realistic** (hands-on work), **Investigative** (analytical/scientific), **Artistic** (creative/expressive), **Social** (helping/teaching), **Enterprising** (leading/persuading), and **Conventional** (structured/detail-oriented). It's good at matching your *interests* to *job activities*.
 
@@ -23,11 +23,11 @@ Most career tests use one of two psychometric frameworks. ParamAI uses both, on 
 
 Using only one is a mistake. RIASEC alone will tell you "you're Investigative, try research" but not that you'd hate the long solo stretches. OCEAN alone will tell you you're conscientious but won't tell you what *kind* of conscientious work to do. Together they paint a much more useful picture.
 
-On top of these two, ParamAI runs a **10-trait vector model** (technical, analytical, social, leadership, stability, creative, independence, structure, resilience, precision) that translates RIASEC + OCEAN into the language the backend uses when matching you to specific careers. You can think of the 10 traits as the "features" our career-matching model trains on.
+On top of these two, ParamAI™ runs a **10-trait vector model** (technical, analytical, social, leadership, stability, creative, independence, structure, resilience, precision) that translates RIASEC + OCEAN into the language the backend uses when matching you to specific careers. You can think of the 10 traits as the "features" our career-matching model trains on.
 
 ## 388 questions, but you don't answer all of them
 
-ParamAI's full question bank has **388 diagnostic items**. If you answered all of them, the assessment would take two hours and be miserable.
+ParamAI™'s full question bank has **388 diagnostic items**. If you answered all of them, the assessment would take two hours and be miserable.
 
 Instead, we use an **Adaptive Question Engine (AQE)** built on Item Response Theory — specifically the two-parameter logistic model (2PL) — with Bayesian trait estimation. In plain English:
 
