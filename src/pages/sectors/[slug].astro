@@ -2,7 +2,7 @@
 import BaseLayout from '@/layouts/BaseLayout.astro'
 import AssessmentCTA from '@/components/AssessmentCTA.astro'
 import Comments from '@/components/Comments.astro'
-import { getCollection, type CollectionEntry } from 'astro:content'
+import { getCollection, render, type CollectionEntry } from 'astro:content'
 import { readingTime } from '@/lib/readingTime'
 
 export async function getStaticPaths() {
@@ -18,8 +18,8 @@ interface Props {
 }
 
 const { entry } = Astro.props
-const { Content } = await entry.render()
-const rt = readingTime(entry.body)
+const { Content } = await render(entry)
+const rt = readingTime(entry.body ?? '')
 
 // Related sectors: up to 3 others, same collection, different slug.
 // Prefer ones whose tags overlap; fall back to the next in sector order.

@@ -20,7 +20,7 @@ export async function GET(context: APIContext) {
       title: p.data.title,
       description: p.data.description,
       pubDate: p.data.pubDate,
-      link: `/posts/${p.slug}/`,
+      link: `/posts/${p.id}/`,
     })),
   ].sort((a, b) => b.pubDate.getTime() - a.pubDate.getTime())
 
