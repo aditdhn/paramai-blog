@@ -26,6 +26,19 @@ const currentPath = Astro.url.pathname
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 
+    {/* Google tag (gtag.js) — same GA4 property/measurement ID as paramai.in,
+        so cross-domain linking (configured in GA4 admin) can stitch a
+        paramai.in <-> paramai.blog visit into one session instead of two. */}
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-L65W7903RB"></script>
+    <script is:inline>
+      window.dataLayer = window.dataLayer || []
+      function gtag() {
+        dataLayer.push(arguments)
+      }
+      gtag('js', new Date())
+      gtag('config', 'G-L65W7903RB')
+    </script>
+
     <title>{title}</title>
     <meta name="description" content={description} />
     <link rel="canonical" href={canonicalURL} />
