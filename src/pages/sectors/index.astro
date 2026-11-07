@@ -3,11 +3,14 @@ import BaseLayout from '@/layouts/BaseLayout.astro'
 import { getCollection } from 'astro:content'
 import { readingTime } from '@/lib/readingTime'
 
-const sectors = (await getCollection('sectors', ({ data }) => !data.draft)).sort(
+const sectors = (await getCollection('sectors')).sort(
   (a, b) => Number(a.data.sectorId.slice(1)) - Number(b.data.sectorId.slice(1)),
 )
 
-const published = sectors.filter((s) => !s.body.trim().startsWith('> **TODO:**')).length
+// A sector is a stub if it is a draft or still has TODO placeholders. Stubs are
+// listed as non-clickable 'Coming soon' cards (their pages are noindex, not in the sitemap).
+const isStubEntry = (s: (typeof sectors)[number]) => s.data.draft || s.body.trim().includes('> **TODO:**')
+const published = sectors.filter((s) => !isStubEntry(s)).length
 ---
 
 <BaseLayout
@@ -28,12 +31,13 @@ const published = sectors.filter((s) => !s.body.trim().startsWith('> **TODO:**')
     <ul class="mt-10 grid gap-4">
       {
         sectors.map((sector) => {
-          const isStub = sector.body.trim().startsWith('> **TODO:**')
+          const isStub = isStubEntry(sector)
+          const Tag = isStub ? 'div' : 'a'
           return (
             <li>
-              <a
-                href={`/sectors/${sector.data.sectorSlug}/`}
-                class="group flex items-center justify-between gap-4 rounded-3xl border border-ink-200 bg-white p-5 shadow-soft transition-all hover:-translate-y-1 hover:border-brand-300 hover:shadow-cozy sm:p-6 dark:border-ink-700 dark:bg-ink-900"
+              <Tag
+                href={isStub ? undefined : `/sectors/${sector.data.sectorSlug}/`}
+                class={`group flex items-center justify-between gap-4 rounded-3xl border border-ink-200 bg-white p-5 shadow-soft sm:p-6 dark:border-ink-700 dark:bg-ink-900 ${isStub ? 'opacity-80' : 'transition-all hover:-translate-y-1 hover:border-brand-300 hover:shadow-cozy'}`}
               >
                 <div class="min-w-0 flex-1">
                   <div class="flex items-center gap-2">
@@ -68,7 +72,7 @@ const published = sectors.filter((s) => !s.body.trim().startsWith('> **TODO:**')
                 <span class="hidden text-brand-600 group-hover:translate-x-0.5 transition-transform sm:block dark:text-brand-400">
                   →
                 </span>
-              </a>
+              </Tag>
             </li>
           )
         })

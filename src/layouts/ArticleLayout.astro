@@ -33,6 +33,8 @@ interface Props {
   related?: Related[]
   relatedTitle?: string
   canonical?: string
+  /** unfinished page: noindex and no publish date */
+  stub?: boolean
   /** path like /posts/slug/ for JSON-LD */
   path: string
 }
@@ -53,6 +55,7 @@ const {
   related = [],
   relatedTitle = 'Keep reading',
   canonical,
+  stub = false,
   path,
 } = Astro.props
 
@@ -89,7 +92,7 @@ const jsonLd = [
 ]
 ---
 
-<BaseLayout title={`${title} | ParamAI™ Blog`} description={description} canonical={canonical} jsonLd={jsonLd}>
+<BaseLayout title={`${title} | ParamAI™ Blog`} description={description} canonical={canonical} jsonLd={stub ? undefined : jsonLd} noindex={stub}>
   <section class="relative overflow-hidden border-b border-ink-200 dark:border-ink-800">
     <div
       class="absolute inset-0 -z-10 opacity-70 dark:opacity-30"
@@ -116,16 +119,17 @@ const jsonLd = [
 
         <p class="mt-6 flex flex-wrap items-center gap-x-3 gap-y-1 text-sm text-ink-600 dark:text-ink-300">
           <span class="font-semibold text-ink-800 dark:text-ink-100">{author}</span>
-          <span aria-hidden="true">·</span>
-          <span>Published <time datetime={iso(pubDate)}>{fmt(pubDate)}</time></span>
-          {updatedDate && (
+          {!stub && (<><span aria-hidden="true">·</span>
+          <span>Published <time datetime={iso(pubDate)}>{fmt(pubDate)}</time></span></>)}
+          {stub && (<><span aria-hidden="true">·</span><span class="font-medium text-ink-700 dark:text-ink-200">Draft, coming soon</span></>)}
+          {!stub && updatedDate && (
             <>
               <span aria-hidden="true">·</span>
               <span class="font-medium text-accent-700 dark:text-accent-300">Updated <time datetime={iso(updatedDate)}>{fmt(updatedDate)}</time></span>
             </>
           )}
-          <span aria-hidden="true">·</span>
-          <span>{readingTime}</span>
+          {!stub && (<><span aria-hidden="true">·</span>
+          <span>{readingTime}</span></>)}
         </p>
 
         {showTags.length > 0 && (

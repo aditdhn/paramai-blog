@@ -21,6 +21,7 @@ interface Props {
 const { entry } = Astro.props
 const { Content, headings } = await render(entry)
 const rt = readingTime(entry.body ?? '')
+const isStub = entry.data.draft || (entry.body ?? '').trim().includes('> **TODO:**')
 
 // Related sectors: up to 3 others, same collection, different slug.
 // Prefer ones whose tags overlap; fall back to the next in sector order.
@@ -64,6 +65,7 @@ if (field) glance.push([`Pay data (${field.name})`, `${formatRs(field.medianRs)}
   related={related}
   relatedTitle="Related sectors"
   canonical={entry.data.canonicalToApp}
+  stub={isStub}
   path={`/sectors/${entry.data.sectorSlug}/`}
 >
   <aside class="not-prose mb-8 rounded-3xl border border-accent-200 bg-accent-50 p-5 shadow-soft dark:border-accent-700/50 dark:bg-accent-950/60" aria-labelledby="glance-h">

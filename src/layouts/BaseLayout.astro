@@ -8,6 +8,8 @@ interface Props {
   ogImage?: string
   /** structured data objects, emitted as application/ld+json */
   jsonLd?: object | object[]
+  /** thin/unfinished pages: robots noindex */
+  noindex?: boolean
 }
 
 const {
@@ -16,6 +18,7 @@ const {
   canonical,
   ogImage = '/og-default.png',
   jsonLd,
+  noindex = false,
 } = Astro.props
 
 const canonicalURL = canonical ?? new URL(Astro.url.pathname, SITE_URL).toString()
@@ -54,7 +57,7 @@ const currentPath = Astro.url.pathname
     <meta property="og:url" content={canonicalURL} />
     <meta property="og:image" content={new URL(ogImage, SITE_URL).toString()} />
     <meta property="og:site_name" content="ParamAI™ Blog" />
-    <meta name="robots" content="index, follow" />
+    <meta name="robots" content={noindex ? 'noindex, follow' : 'index, follow'} />
 
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content={title} />
