@@ -1,0 +1,37 @@
+---
+// Small decorative inline-SVG illustrations for article and sector headers.
+// Decorative only: hidden from assistive tech. Colours come from theme tokens.
+interface Props {
+  kind: 'post' | 'sector'
+}
+const { kind } = Astro.props
+---
+
+{
+  kind === 'post' ? (
+    <svg viewBox="0 0 200 140" class="h-auto w-full" aria-hidden="true" focusable="false" role="presentation">
+      <circle cx="150" cy="38" r="26" class="fill-amber-200 dark:fill-amber-300/80"></circle>
+      <circle cx="150" cy="38" r="38" class="fill-amber-200/40 dark:fill-amber-300/10"></circle>
+      <path d="M0 112c40-24 80-26 120-10 30 12 56 8 80-6v44H0z" class="fill-accent-200 dark:fill-accent-800"></path>
+      <path d="M0 128c50-16 100-14 200-2v14H0z" class="fill-accent-300 dark:fill-accent-700"></path>
+      <g transform="translate(44 74)">
+        <path d="M0 8c14-8 30-8 44-1v28c-14-7-30-7-44 1z" class="fill-white stroke-ink-300 dark:fill-ink-200 dark:stroke-ink-500" stroke-width="2"></path>
+        <path d="M88 8c-14-8-30-8-44-1v28c14-7 30-7 44 1z" class="fill-brand-50 stroke-ink-300 dark:fill-ink-100 dark:stroke-ink-500" stroke-width="2"></path>
+        <path d="M8 16c8-3 20-3 28 0M8 23c8-3 20-3 28 0M52 16c8-3 20-3 28 0M52 23c8-3 20-3 28 0" fill="none" stroke-width="2" stroke-linecap="round" class="stroke-brand-400"></path>
+      </g>
+      <g class="fill-brand-300 dark:fill-brand-400/70"><circle cx="30" cy="40" r="4"></circle><circle cx="96" cy="26" r="3"></circle></g>
+    </svg>
+  ) : (
+    <svg viewBox="0 0 200 140" class="h-auto w-full" aria-hidden="true" focusable="false" role="presentation">
+      <circle cx="46" cy="36" r="22" class="fill-amber-200 dark:fill-amber-300/80"></circle>
+      <path d="M0 108l46-40 34 28 40-52 50 64 30-22v54H0z" class="fill-accent-200 dark:fill-accent-800"></path>
+      <path d="M0 126l60-30 50 22 90-34v56H0z" class="fill-accent-300 dark:fill-accent-700"></path>
+      <path d="M120 138c-20-10 30-16 6-26" fill="none" stroke-width="9" stroke-linecap="round" class="stroke-brand-200 dark:stroke-brand-300/60"></path>
+      <g stroke-width="2.5" stroke-linecap="round" class="stroke-ink-700 dark:stroke-ink-200" fill="none">
+        <path d="M150 112V72"></path>
+        <path d="M150 76h26l6 7-6 7h-26z" class="fill-brand-100 dark:fill-brand-300/70"></path>
+      </g>
+      <g class="fill-brand-300 dark:fill-brand-400/70"><circle cx="100" cy="22" r="3.5"></circle><circle cx="178" cy="30" r="3"></circle></g>
+    </svg>
+  )
+}

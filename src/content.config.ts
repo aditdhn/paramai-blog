@@ -14,6 +14,10 @@ const sectors = defineCollection({
     updatedDate: z.coerce.date().optional(),
     author: z.string().default('ParamAI™ Research'),
     tags: z.array(z.string()).default([]),
+    // Short factual summary bullets shown as 'Key takeaways'.
+    takeaways: z.array(z.string()).default([]),
+    // id of the closest field in src/data/career-stats.json (for the 'At a glance' panel).
+    dataField: z.string().optional(),
     draft: z.boolean().default(false),
     // If true, a rel=canonical pointing back to paramai.in equivalent is emitted.
     canonicalToApp: z.string().optional(),
@@ -30,6 +34,7 @@ const posts = defineCollection({
     updatedDate: z.coerce.date().optional(),
     author: z.string().default('ParamAI™ Research'),
     tags: z.array(z.string()).default([]),
+    takeaways: z.array(z.string()).default([]),
     draft: z.boolean().default(false),
   }),
 })

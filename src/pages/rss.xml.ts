@@ -15,12 +15,14 @@ export async function GET(context: APIContext) {
       description: s.data.description,
       pubDate: s.data.pubDate,
       link: `/sectors/${s.data.sectorSlug}/`,
+      customData: s.data.updatedDate ? `<atom:updated>${s.data.updatedDate.toISOString()}</atom:updated>` : undefined,
     })),
     ...posts.map((p) => ({
       title: p.data.title,
       description: p.data.description,
       pubDate: p.data.pubDate,
       link: `/posts/${p.id}/`,
+      customData: p.data.updatedDate ? `<atom:updated>${p.data.updatedDate.toISOString()}</atom:updated>` : undefined,
     })),
   ].sort((a, b) => b.pubDate.getTime() - a.pubDate.getTime())
 
@@ -29,5 +31,6 @@ export async function GET(context: APIContext) {
     description: SITE_DESCRIPTION,
     site: context.site ?? SITE_URL,
     items,
+    xmlns: { atom: 'http://www.w3.org/2005/Atom' },
   })
 }
