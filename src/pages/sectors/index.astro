@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '@/layouts/BaseLayout.astro'
 import { getCollection } from 'astro:content'
+import { readingTime } from '@/lib/readingTime'
 
 const sectors = (await getCollection('sectors', ({ data }) => !data.draft)).sort(
   (a, b) => Number(a.data.sectorId.slice(1)) - Number(b.data.sectorId.slice(1)),
@@ -24,7 +25,7 @@ const published = sectors.filter((s) => !s.body.trim().startsWith('> **TODO:**')
       written so far, the rest have stubs you can watch for updates.
     </p>
 
-    <ul class="mt-10 divide-y divide-ink-200 dark:divide-ink-800">
+    <ul class="mt-10 grid gap-4">
       {
         sectors.map((sector) => {
           const isStub = sector.body.trim().startsWith('> **TODO:**')
@@ -32,7 +33,7 @@ const published = sectors.filter((s) => !s.body.trim().startsWith('> **TODO:**')
             <li>
               <a
                 href={`/sectors/${sector.data.sectorSlug}/`}
-                class="group flex items-center justify-between gap-4 py-5 transition-colors"
+                class="group flex items-center justify-between gap-4 rounded-3xl border border-ink-200 bg-white p-5 shadow-soft transition-all hover:-translate-y-1 hover:border-brand-300 hover:shadow-cozy sm:p-6 dark:border-ink-700 dark:bg-ink-900"
               >
                 <div class="min-w-0 flex-1">
                   <div class="flex items-center gap-2">
@@ -40,7 +41,7 @@ const published = sectors.filter((s) => !s.body.trim().startsWith('> **TODO:**')
                       {sector.data.sectorId}
                     </span>
                     {!isStub && (
-                      <span class="rounded-full bg-emerald-100 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-emerald-700 dark:bg-emerald-950/60 dark:text-emerald-300">
+                      <span class="rounded-full bg-accent-100 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-accent-700 dark:bg-accent-900/60 dark:text-accent-200">
                         Written
                       </span>
                     )}
@@ -56,6 +57,13 @@ const published = sectors.filter((s) => !s.body.trim().startsWith('> **TODO:**')
                   <p class="mt-0.5 text-sm text-ink-600 dark:text-ink-300">
                     {sector.data.heroTagline}
                   </p>
+                  {!isStub && (
+                    <p class="mt-2 flex flex-wrap items-center gap-2 text-xs text-ink-600 dark:text-ink-300">
+                      <span>{readingTime(sector.body ?? '')}</span>
+                      {sector.data.tags.filter((t) => t !== 'sector').slice(0, 3).map((t) => (<span class="rounded-full bg-brand-100 px-2 py-0.5 font-medium text-brand-800 dark:bg-brand-900/60 dark:text-brand-200">{t}</span>))}
+                      {sector.data.updatedDate && <span class="font-medium text-accent-700 dark:text-accent-300">Updated {sector.data.updatedDate.toLocaleDateString('en-IN', { year: 'numeric', month: 'short', day: 'numeric', timeZone: 'UTC' })}</span>}
+                    </p>
+                  )}
                 </div>
                 <span class="hidden text-brand-600 group-hover:translate-x-0.5 transition-transform sm:block dark:text-brand-400">
                   →

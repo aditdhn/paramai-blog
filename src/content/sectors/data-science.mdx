@@ -5,21 +5,29 @@ sectorId: "S2"
 sectorSlug: "data-science"
 heroTagline: "Turning messy data into decisions: analysts, scientists, and data engineers."
 pubDate: 2026-04-09
+updatedDate: 2026-11-06
+dataField: "technology"
+takeaways:
+  - "The title \"data scientist\" covers three different jobs: data analyst, data scientist and data engineer."
+  - "Analysts need analytical and social skills; data scientists need analytical and technical depth; engineers need technical skill and a taste for structure."
+  - "A free dataset and a notebook is a cheap way to find out whether you enjoy the work."
+  - "In pay data, the closest field (Technology & Computing) is context only, not a promise for any one role."
 tags: ["sector", "data-science", "analytics"]
 draft: false
 ---
 
 import AssessmentCTA from '@/components/AssessmentCTA.astro'
+import DataSnapshot from '@/components/DataSnapshot.astro'
 
 ## What "data science" actually means in an Indian company
 
 If you ask ten hiring managers what a "data scientist" does, you'll get ten different answers — because the title has diverged into three distinct roles that need very different skills and personalities.
 
-**Data analyst.** You answer business questions with SQL, dashboards, and the occasional Python script. A product manager asks "why did retention drop last week?" and you figure it out. Most "data science" jobs at early-stage Indian startups are actually this. It's also the most student-friendly entry point — you can do the work with undergraduate-level statistics, and the skills transfer to any domain you find interesting.
+**Data analyst.** You answer business questions with SQL, dashboards, and the occasional Python script. A product manager asks "why did retention drop last week?" and you figure it out. Many "data science" jobs at early-stage Indian startups are of this kind. It's also the most student-friendly entry point — you can do the work with undergraduate-level statistics, and the skills transfer to any domain you find interesting.
 
 **Data scientist.** You build statistical or ML models that change how the business operates — churn prediction, LTV estimation, pricing experiments, recommendation systems. This is halfway between analytics and ML engineering. The math is harder than analytics, and you spend more time arguing with product managers about whether your model should actually be deployed.
 
-**Data engineer.** You build the pipelines and warehouses that the above two roles depend on. Less glamorous on social media, more important to the business, and paid nearly as well as applied ML engineers. India has a severe shortage of good data engineers — if you enjoy systems work and SQL doesn't bore you, this is the quietest path to a high-paying career.
+**Data engineer.** You build the pipelines and warehouses that the above two roles depend on. Less glamorous on social media, and important to the business. If you enjoy systems work and SQL doesn't bore you, this is a path worth considering.
 
 ## Who thrives here
 
@@ -37,7 +45,7 @@ Across all three, **Conscientiousness** (Big Five) is load-bearing. Sloppy data 
 
 The cheapest way to find out if you like this work: download a free dataset (India Open Data portal has thousands), load it in a Google Colab notebook, and try to answer a real question — *"do states with higher literacy have better vaccination rates?"* The process of cleaning messy data, picking the right chart, and noticing the thing you didn't expect to notice is exactly what the job feels like.
 
-If that process felt boring, data science is probably not for you. If it felt like a puzzle you wanted to keep solving, you've just done a more useful 2 hours than most certificate courses.
+If that process felt boring, data science is probably not for you. If it felt like a puzzle you wanted to keep solving, you've just spent a more informative two hours than reading about it.
 
 **Formal path:** Any quantitative degree works — statistics, economics, CS, applied math, physics, even engineering. What matters more than the degree is whether you took a proper statistics course and whether you can write SQL without looking it up.
 
@@ -45,21 +53,13 @@ If that process felt boring, data science is probably not for you. If it felt li
 
 The jump to data engineer is the smallest — it's mostly new tools (Snowflake, dbt, Airflow, BigQuery) on top of skills you already have. The jump to analyst is bigger than people think, because the hard part isn't technique but business judgment. The jump to data scientist sits in between.
 
-**The trap to avoid:** "data science bootcamps" that promise ₹20 LPA jobs after 3 months. The market for inexperienced data scientists is saturated; the market for experienced analysts who can communicate is not. If you're starting fresh, aim at the analyst role first — the ceiling is the same, and the first job is far easier to get.
+**A trap to avoid:** "data science bootcamps" that promise a high-paying job in a few months. Entry-level data scientist roles are competitive; analyst roles are often an easier first step, and the skills carry over. Check what a programme teaches and who hires its graduates before you pay.
 
-## What the jobs actually pay
+## What the data says about pay
 
-As of early 2026 (India, tier-1 cities):
+<DataSnapshot fieldId="technology" topic="data science work" />
 
-- **Data analyst, fresh graduate:** ₹8–18 LPA
-- **Data analyst, 3–5 years:** ₹18–35 LPA
-- **Data scientist, fresh graduate:** ₹12–25 LPA
-- **Data scientist, 3–5 years:** ₹25–60 LPA
-- **Data engineer, fresh graduate:** ₹14–28 LPA
-- **Data engineer, 3–5 years:** ₹30–70 LPA
-- **Senior/staff data engineer (tier-1 product company):** ₹60 LPA to 1.5+ crore
-
-Data engineering salaries have been climbing faster than the others for three years running — it's the quiet supply-demand story of the sector.
+Pay for individual roles varies widely with employer, city and seniority. We do not hold a sourced salary table for single roles, so we do not publish one here.
 
 <AssessmentCTA sectorSlug="data-science" />
 
