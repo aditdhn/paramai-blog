@@ -39,6 +39,7 @@ const currentPath = Astro.url.pathname
       gtag('config', 'G-L65W7903RB')
     </script>
 
+    <meta name="theme-color" content="#FFF8F0" />
     <title>{title}</title>
     <meta name="description" content={description} />
     <link rel="canonical" href={canonicalURL} />
@@ -56,6 +57,50 @@ const currentPath = Astro.url.pathname
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content={new URL(ogImage, SITE_URL).toString()} />
 
+
+    <style is:global>
+      /* Comfortable reading size and rhythm */
+      .cozy-body { font-size: 1.0625rem; line-height: 1.7; }
+      /* Soft paper-dot texture */
+      .cozy-body {
+        background-image: radial-gradient(rgba(122, 99, 84, 0.10) 1px, transparent 1px);
+        background-size: 22px 22px;
+      }
+      .dark .cozy-body {
+        background-image: radial-gradient(rgba(217, 197, 173, 0.07) 1px, transparent 1px);
+      }
+      /* Visible focus for keyboard users */
+      :focus-visible { outline: 3px solid #C2410C; outline-offset: 3px; border-radius: 6px; }
+      .dark :focus-visible { outline-color: #FDB074; }
+      /* Respect reduced motion: stop all animation and transitions */
+      @media (prefers-reduced-motion: reduce) {
+        *, *::before, *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
+      }
+
+      /* Theme the /data/ page (and any page using --ds-* tokens) from here */
+      html:root {
+        --ds-card: #FFFFFF; --ds-card-b: rgba(194, 65, 12, 0.22); --ds-soft: rgba(122, 99, 84, 0.08);
+        --ds-line: rgba(122, 99, 84, 0.22); --ds-grid: rgba(122, 99, 84, 0.2); --ds-ax: #5F4A3E; --ds-halo: #FFFFFF;
+        --ds-a0: #2F6F60; --ds-a1: #C2410C; --ds-a2: #9A6B00; --ds-a3: #3E8776;
+        --ds-bar1: #2F6F60; --ds-bar2: #5BA391;
+        --ds-warm1: #C2410C; --ds-warm2: #F97316; --ds-warm-t: #9A3412;
+        --ds-l0: #2F6F60; --ds-l1: #C2410C; --ds-l2: #7A5FA8; --ds-l3: #9A6B00;
+      }
+      html:root.dark {
+        --ds-card: #2E2029; --ds-card-b: rgba(253, 176, 116, 0.28); --ds-soft: rgba(255, 255, 255, 0.06);
+        --ds-line: rgba(217, 197, 173, 0.22); --ds-grid: rgba(217, 197, 173, 0.18); --ds-ax: #D9C5AD; --ds-halo: #2E2029;
+        --ds-a0: #85BFAE; --ds-a1: #FDB074; --ds-a2: #F5C453; --ds-a3: #B3D8CC;
+        --ds-bar1: #5BA391; --ds-bar2: #B3D8CC;
+        --ds-warm-t: #FDB074;
+        --ds-l0: #85BFAE; --ds-l1: #FDB074; --ds-l2: #C9B3F0; --ds-l3: #F5C453;
+      }
+      html:root .ds-card { border-radius: 1.75rem; box-shadow: 0 2px 4px rgba(74,56,47,0.05), 0 18px 40px -18px rgba(74,56,47,0.22); }
+      html:root .ds-toggle button[aria-pressed='true'] { background: #C2410C; color: #fff; }
+      html:root .ds-toggle button:focus-visible, html:root .ds-tab:focus-visible, html:root .ds-summary:focus-visible { outline: 3px solid #C2410C; }
+      html:root.dark .ds-toggle button[aria-pressed='true'] { background: #FDB074; color: #2E2029; }
+      html:root .ds-mean, html:root .ds-key-mean { border-color: #2E2029; }
+    </style>
+
     <link rel="alternate" type="application/rss+xml" title={SITE_TITLE} href="/rss.xml" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -67,18 +112,18 @@ const currentPath = Astro.url.pathname
     {/* Dark mode: apply saved preference before first paint to avoid flash. */}
     <script is:inline>
       ;(() => {
-        // paramai.in is dark-first: default to dark unless the visitor chose light.
+        // Light-first: dark only when the visitor chose it.
         const saved = localStorage.getItem('theme')
-        if (saved !== 'light') {
+        if (saved === 'dark') {
           document.documentElement.classList.add('dark')
         }
       })()
     </script>
   </head>
   <body
-    class="min-h-screen bg-white font-sans text-ink-900 antialiased transition-colors duration-300 dark:bg-ink-950 dark:text-ink-100"
+    class="cozy-body min-h-screen bg-cream font-sans text-ink-900 antialiased transition-colors duration-300 dark:bg-ink-950 dark:text-ink-100"
   >
-    <header class="sticky top-0 z-40 border-b border-ink-200/70 bg-white/85 backdrop-blur-lg dark:border-ink-800/70 dark:bg-ink-950/85">
+    <header class="sticky top-0 z-40 border-b border-ink-200/70 bg-cream/85 backdrop-blur-lg dark:border-ink-800/70 dark:bg-ink-950/85">
       <div class="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
         <a href="/" class="group flex items-center gap-2 text-lg font-bold">
           <span
@@ -139,7 +184,7 @@ const currentPath = Astro.url.pathname
 
           <a
             href={APP_URL}
-            class="ml-2 hidden rounded-full bg-gradient-to-r from-brand-600 to-brand-500 px-4 py-2 font-semibold text-white shadow-md shadow-brand-600/25 transition-all hover:shadow-lg hover:shadow-brand-600/40 md:inline-flex"
+            class="ml-2 hidden rounded-full bg-brand-600 px-4 py-2 font-semibold text-white shadow-soft transition-all hover:-translate-y-0.5 hover:bg-brand-700 hover:shadow-cozy md:inline-flex"
             rel="noopener"
           >
             Take the assessment →
