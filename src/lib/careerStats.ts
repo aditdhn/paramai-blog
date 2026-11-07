@@ -44,7 +44,8 @@ export const formatRs = (n: number): string => `₹${n.toLocaleString('en-IN')}`
 /** Rs per year -> "₹6.7 L" (lakh). */
 export const formatLakh = (n: number): string => `₹${(n / 100000).toFixed(1)} L`
 export const formatNum = (n: number): string => n.toLocaleString('en-IN')
-export const CAREER_COUNT = formatNum(f.distinctCareersAudited)
+/** Headline career count used in marketing copy, matching paramai.in ("1,500+ real careers"). Founder-specified; the audited distinct-career figure (career-stats.json) is shown separately on /data/. */
+export const CAREER_COUNT = '1,500+'
 
 export const HEADLINE_STATS = [
   {

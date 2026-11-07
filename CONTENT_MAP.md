@@ -25,7 +25,7 @@ Two sites, two jobs. Agreed split (approved by the founder):
 ## Wording rules for data pages
 
 - Say "not on a regular salary" for the complement of the salaried share. Never "self-employed".
-- The headline career count is the audited **1,490 distinct careers**, not "1,500+".
+- Marketing copy (home, CTA, posts) says "1,500+ real careers", as paramai.in does (founder decision; `CAREER_COUNT` in `src/lib/careerStats.ts`). The data page states the audited figure as such: "1,490 distinct careers audited" (from `career-stats.json`).
 - No reliability or validation claims about the data.
 - Pay is indicative context, not a promise.
 - Pay ladders are basic pay before allowances.
