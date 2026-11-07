@@ -67,9 +67,9 @@ const currentPath = Astro.url.pathname
     {/* Dark mode: apply saved preference before first paint to avoid flash. */}
     <script is:inline>
       ;(() => {
-        // paramai.in is dark-first: default to dark unless the visitor chose light.
         const saved = localStorage.getItem('theme')
-        if (saved !== 'light') {
+        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches
+        if (saved === 'dark' || (!saved && prefersDark)) {
           document.documentElement.classList.add('dark')
         }
       })()
