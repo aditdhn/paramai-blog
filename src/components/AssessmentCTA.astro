@@ -24,19 +24,23 @@ const href = sectorSlug
   : `${ASSESSMENT_URL}?utm_source=blog&utm_medium=${medium}${campaign ? `&utm_campaign=${campaign}` : ''}`
 ---
 
-<aside class="my-10 rounded-2xl border border-brand-100 bg-brand-50 p-6">
-  <p class="text-sm font-semibold uppercase tracking-wide text-brand-700">
+<aside class="relative my-10 overflow-hidden rounded-3xl border border-brand-200 bg-gradient-to-br from-brand-50 via-white to-accent-50 p-6 shadow-soft sm:p-8 dark:border-brand-300/30 dark:from-ink-900 dark:via-ink-900 dark:to-accent-950">
+  <svg class="pointer-events-none absolute -right-6 -top-6 h-28 w-28 text-brand-300/60 dark:text-brand-300/20" viewBox="0 0 100 100" aria-hidden="true" focusable="false">
+    <circle cx="50" cy="50" r="22" fill="currentColor"></circle>
+    <g stroke="currentColor" stroke-width="5" stroke-linecap="round"><path d="M50 8v10M50 82v10M8 50h10M82 50h10M20 20l7 7M73 73l7 7M80 20l-7 7M27 73l-7 7"></path></g>
+  </svg>
+  <p class="relative flex items-center gap-2 text-sm font-semibold uppercase tracking-wide text-brand-700 dark:text-brand-300"><span aria-hidden="true">✨</span>
     Ready to go deeper?
   </p>
-  <h3 class="mt-2 text-xl font-bold text-brand-900">{label}</h3>
-  <p class="mt-2 text-slate-700">
+  <h3 class="relative mt-2 text-xl font-bold text-ink-900 dark:text-ink-50">{label}</h3>
+  <p class="relative mt-2 text-ink-700 dark:text-ink-200">
     ParamAI™’s AI assessment analyses 388 diagnostic questions across RIASEC +
     OCEAN and matches you to {CAREER_COUNT} real careers — backed by India’s largest
     calibrated career knowledge bank.
   </p>
   <a
     href={href}
-    class="mt-4 inline-flex items-center rounded-full bg-brand-600 px-5 py-2.5 text-sm font-semibold text-white hover:bg-brand-700"
+    class="relative mt-5 inline-flex items-center rounded-full bg-brand-600 px-6 py-3 text-sm font-semibold text-white shadow-cozy transition-all hover:-translate-y-0.5 hover:bg-brand-700"
     rel="noopener"
   >
     Start the free assessment →

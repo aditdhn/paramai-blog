@@ -2,6 +2,7 @@
 import BaseLayout from '@/layouts/BaseLayout.astro'
 import { getCollection } from 'astro:content'
 import { APP_URL } from '@/consts'
+import HeroScene from '@/components/HeroScene.astro'
 import { HEADLINE_STATS, CAREER_COUNT } from '@/lib/careerStats'
 
 const sectors = (await getCollection('sectors', ({ data }) => !data.draft)).sort(
@@ -77,8 +78,8 @@ const fallbackVisual = { glyph: '✨', color: 'from-brand-500 to-brand-700' }
   <section class="relative overflow-hidden">
     {/* Animated gradient background */}
     <div
-      class="absolute inset-0 -z-10 bg-[length:200%_200%] opacity-80 dark:opacity-40 animate-gradient-shift"
-      style="background-image: radial-gradient(at 20% 20%, rgba(124,58,237,0.20), transparent 60%), radial-gradient(at 80% 30%, rgba(0,212,255,0.14), transparent 60%), radial-gradient(at 50% 80%, rgba(124,58,237,0.18), transparent 60%);"
+      class="absolute inset-0 -z-10 bg-[length:200%_200%] opacity-90 dark:opacity-40 animate-gradient-shift"
+      style="background-image: radial-gradient(at 15% 20%, rgba(253,176,116,0.45), transparent 55%), radial-gradient(at 85% 25%, rgba(245,196,83,0.35), transparent 55%), radial-gradient(at 50% 90%, rgba(133,191,174,0.40), transparent 60%);"
     >
     </div>
 
@@ -89,7 +90,7 @@ const fallbackVisual = { glyph: '✨', color: 'from-brand-500 to-brand-700' }
       </p>
       <h1 class="animate-fade-in-up mt-5 text-5xl font-bold leading-[1.05] tracking-tight sm:text-6xl md:text-7xl">
         Your map to{' '}
-        <span class="bg-gradient-to-r from-brand-600 via-brand-500 to-accent-500 bg-clip-text text-transparent">
+        <span class="bg-gradient-to-r from-brand-600 via-brand-500 to-amber-500 bg-clip-text text-transparent">
           {CAREER_COUNT} real careers.
         </span>
       </h1>
@@ -102,7 +103,7 @@ const fallbackVisual = { glyph: '✨', color: 'from-brand-500 to-brand-700' }
       <div class="animate-fade-in-up mt-10 flex flex-wrap items-center justify-center gap-3">
         <a
           href={APP_URL + '/assessment?utm_source=blog&utm_medium=hero&utm_campaign=home'}
-          class="inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-brand-600 to-brand-500 px-6 py-3 text-sm font-semibold text-white shadow-lg shadow-brand-600/30 transition-all hover:shadow-xl hover:shadow-brand-600/45"
+          class="inline-flex items-center gap-2 rounded-full bg-brand-600 px-6 py-3 text-sm font-semibold text-white shadow-cozy transition-all hover:-translate-y-0.5 hover:bg-brand-700"
           rel="noopener"
         >
           Take the free assessment →
@@ -115,10 +116,12 @@ const fallbackVisual = { glyph: '✨', color: 'from-brand-500 to-brand-700' }
         </a>
       </div>
 
+      <div class="animate-fade-in-up mt-12"><HeroScene /></div>
+
       {/* Stats strip */}
       <div class="animate-fade-in-up mt-16 grid grid-cols-2 gap-4 sm:grid-cols-4">
         {stats.map((s) => (
-          <div class="rounded-2xl border border-ink-200/70 bg-white/60 p-4 text-center backdrop-blur dark:border-ink-800/70 dark:bg-ink-900/60">
+          <div class="rounded-3xl border border-ink-200/80 bg-white/80 p-4 text-center shadow-soft backdrop-blur dark:border-ink-800/70 dark:bg-ink-900/60">
             <div class="text-3xl font-bold text-brand-600 dark:text-brand-400">{s.value}</div>
             <div class="mt-1 text-xs font-medium uppercase tracking-wider text-ink-500 dark:text-ink-400">
               {s.label}
@@ -166,7 +169,7 @@ const fallbackVisual = { glyph: '✨', color: 'from-brand-500 to-brand-700' }
         {posts.slice(0, 3).map((p) => (
           <a
             href={`/posts/${p.slug}/`}
-            class="group flex flex-col rounded-2xl border border-ink-200 bg-white p-6 transition-all hover:-translate-y-0.5 hover:border-brand-500 hover:shadow-lg dark:border-ink-800 dark:bg-ink-900 dark:hover:border-brand-400"
+            class="group flex flex-col rounded-3xl border border-ink-200 bg-white p-7 shadow-soft transition-all hover:-translate-y-1 hover:border-brand-300 hover:shadow-cozy dark:border-ink-800 dark:bg-ink-900 dark:hover:border-brand-400"
           >
             <p class="text-xs font-medium uppercase tracking-wider text-ink-500 dark:text-ink-400">
               {p.data.pubDate.toLocaleDateString('en-IN', { year: 'numeric', month: 'long', day: 'numeric' })}
@@ -204,7 +207,7 @@ const fallbackVisual = { glyph: '✨', color: 'from-brand-500 to-brand-700' }
         return (
           <a
             href={`/sectors/${sector.data.sectorSlug}/`}
-            class="group relative overflow-hidden rounded-2xl border border-ink-200 bg-white p-5 transition-all hover:-translate-y-0.5 hover:border-brand-500 hover:shadow-lg dark:border-ink-800 dark:bg-ink-900 dark:hover:border-brand-400"
+            class="group relative overflow-hidden rounded-3xl border border-ink-200 bg-white p-5 shadow-soft transition-all hover:-translate-y-1 hover:border-brand-300 hover:shadow-cozy dark:border-ink-800 dark:bg-ink-900 dark:hover:border-brand-400"
           >
             <div class="flex items-start gap-4">
               <div class={`flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br ${visual.color} text-2xl shadow-md`}>
@@ -212,7 +215,7 @@ const fallbackVisual = { glyph: '✨', color: 'from-brand-500 to-brand-700' }
               </div>
               <div class="min-w-0 flex-1">
                 <div class="flex items-center gap-2">
-                  <p class="text-[11px] font-mono uppercase tracking-wider text-ink-400 dark:text-ink-500">
+                  <p class="text-[11px] font-mono uppercase tracking-wider text-ink-500 dark:text-ink-400">
                     {sector.data.sectorId}
                   </p>
                 </div>
@@ -232,7 +235,7 @@ const fallbackVisual = { glyph: '✨', color: 'from-brand-500 to-brand-700' }
 
   {/* Community invite */}
   <section class="mx-auto max-w-4xl px-6 py-16">
-    <div class="relative overflow-hidden rounded-3xl border border-brand-200 bg-gradient-to-br from-brand-50 via-white to-accent-50 p-8 sm:p-12 dark:border-brand-500/30 dark:from-brand-950/40 dark:via-ink-950 dark:to-accent-950/20">
+    <div class="relative overflow-hidden rounded-[2rem] border border-brand-200 bg-gradient-to-br from-brand-50 via-white to-accent-50 p-8 shadow-soft sm:p-12 dark:border-brand-500/30 dark:from-brand-950/40 dark:via-ink-950 dark:to-accent-950/20">
       <div class="absolute -right-20 -top-20 h-64 w-64 rounded-full bg-gradient-to-br from-brand-400/20 to-accent-400/20 blur-3xl"></div>
       <p class="text-xs font-semibold uppercase tracking-wider text-brand-700 dark:text-brand-300">
         For students, by students (+ researchers)
