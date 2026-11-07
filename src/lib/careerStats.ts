@@ -44,6 +44,7 @@ export const formatRs = (n: number): string => `₹${n.toLocaleString('en-IN')}`
 /** Rs per year -> "₹6.7 L" (lakh). */
 export const formatLakh = (n: number): string => `₹${(n / 100000).toFixed(1)} L`
 export const formatNum = (n: number): string => n.toLocaleString('en-IN')
+export const CAREER_COUNT = formatNum(f.distinctCareersAudited)
 
 export const HEADLINE_STATS = [
   {
