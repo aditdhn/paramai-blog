@@ -3,10 +3,13 @@
   "type": "module",
   "version": "0.1.0",
   "private": true,
-  "description": "ParamAI career guidance blog — content hub for paramai.blog, funnels to the assessment at paramai.in",
+  "description": "ParamAI career guidance blog \u00e2\u20ac\u201d content hub for paramai.blog, funnels to the assessment at paramai.in",
   "scripts": {
     "dev": "astro dev",
     "start": "astro dev",
+    "check:stats": "node scripts/check-career-stats.mjs",
+    "refresh:stats": "node scripts/refresh-career-stats.mjs",
+    "prebuild": "npm run check:stats",
     "build": "astro build",
     "preview": "astro preview",
     "astro": "astro"

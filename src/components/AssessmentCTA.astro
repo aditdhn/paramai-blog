@@ -4,17 +4,23 @@ import { ASSESSMENT_URL } from '@/consts'
 interface Props {
   sectorSlug?: string
   label?: string
+  /** Non-sector pages (e.g. /data/): sets utm_medium. Defaults to "inline". */
+  medium?: string
+  /** Non-sector pages: sets utm_campaign. */
+  campaign?: string
 }
 
 const {
   sectorSlug,
   label = 'Find your best-fit career in 15 minutes',
+  medium = 'inline',
+  campaign,
 } = Astro.props
 
 // Attach a UTM so we can measure blog→assessment conversion in analytics.
 const href = sectorSlug
   ? `${ASSESSMENT_URL}?utm_source=blog&utm_medium=sector&utm_campaign=${sectorSlug}`
-  : `${ASSESSMENT_URL}?utm_source=blog&utm_medium=inline`
+  : `${ASSESSMENT_URL}?utm_source=blog&utm_medium=${medium}${campaign ? `&utm_campaign=${campaign}` : ''}`
 ---
 
 <aside class="my-10 rounded-2xl border border-brand-100 bg-brand-50 p-6">
