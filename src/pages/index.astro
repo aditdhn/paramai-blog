@@ -2,6 +2,7 @@
 import BaseLayout from '@/layouts/BaseLayout.astro'
 import { getCollection } from 'astro:content'
 import { APP_URL } from '@/consts'
+import { HEADLINE_STATS } from '@/lib/careerStats'
 
 const sectors = (await getCollection('sectors', ({ data }) => !data.draft)).sort(
   (a, b) => Number(a.data.sectorId.slice(1)) - Number(b.data.sectorId.slice(1)),
@@ -126,6 +127,24 @@ const fallbackVisual = { glyph: '✨', color: 'from-brand-500 to-brand-700' }
         ))}
       </div>
     </div>
+  </section>
+
+  {/* Data teaser */}
+  <section class="mx-auto max-w-6xl px-4 pt-4 sm:px-6">
+    <a
+      href="/data/"
+      class="group block rounded-3xl border border-brand-100 bg-brand-50/60 p-6 transition-colors hover:border-brand-300 dark:border-brand-500/30 dark:bg-brand-950/30 sm:p-8"
+    >
+      <p class="text-xs font-semibold uppercase tracking-wider text-brand-700 dark:text-brand-300">Data</p>
+      <h2 class="mt-1 text-2xl font-bold tracking-tight">The numbers behind the careers</h2>
+      <p class="mt-2 max-w-2xl text-ink-600 dark:text-ink-300">
+        What {HEADLINE_STATS[1].value} career fields pay, how many of those jobs are on a regular salary, and
+        four official pay ladders (IAS, IPS, Army, professor), each with its limits stated.
+      </p>
+      <span class="mt-4 inline-flex items-center text-sm font-semibold text-brand-600 group-hover:underline dark:text-brand-400">
+        See the data →
+      </span>
+    </a>
   </section>
 
   {/* Featured posts */}
