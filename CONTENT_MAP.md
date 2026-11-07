@@ -7,6 +7,14 @@ Two sites, two jobs. Agreed split (approved by the founder):
 | **paramai.in/blog** (React page in `aditdhn/param-ai-main-updated`, VPS) | Assessment guides | The 13 assessment / stream guides. Slugs: `src/frontend/src/data/blogArticles.ts` in the main repo (that file is the list of record; do not copy slugs here). |
 | **paramai.blog** (this repo, Vercel) | Student hook: discovery | Sector pages (`/sectors/`), data stories (`/data/`), discovery and general editorial (`/posts/`). |
 
+## /data/ is a hook, not the full dataset
+
+`/data/` is the free preview: the stat strip, the three callouts and the top 5 fields by median pay (with caveats). The other fields, the share-on-a-regular-salary view and the pay ladders are not rendered here; the page sends readers to the free assessment on paramai.in (`utm_campaign=data`). All figures still come from `src/data/career-stats.json`; only the presentation is trimmed.
+
+## /data/ is a hook, not the full dataset
+
+`/data/` is the free preview: the stat strip, the three callouts and the top 5 fields by median pay (with caveats). The other fields, the share-on-a-regular-salary view and the pay ladders are not rendered on this page at all; it sends readers to the free assessment on paramai.in (`utm_campaign=data`). All figures still come from `src/data/career-stats.json`; only the presentation is trimmed.
+
 ## Rules
 
 1. **No piece lives on both sites.** If a topic needs to be on both, write two different pieces with different jobs and link between them.

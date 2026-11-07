@@ -5,27 +5,28 @@ import {
   FIELDS,
   LADDERS,
   ALL_INDIA_MEDIAN_RS,
-  ALL_INDIA_MEAN_RS,
   DATA_PERIOD,
   HEADLINE_STATS,
   formatRs,
-  formatLakh,
   formatNum,
-  entryPay,
 } from '@/lib/careerStats'
 
-// ── Field pay chart ────────────────────────────────────────────────────────
+// The free page shows the top 5 fields by median; everything else is not
+// rendered at all (it lives on paramai.in, behind the free assessment).
+const SHOWN = 5
 const PAY_MAX = 60000 // axis ceiling for the bars (above the highest mean)
 const byPay = [...FIELDS].sort((a, b) => b.medianRs - a.medianRs)
 const byShare = [...FIELDS].sort((a, b) => b.regularSharePct - a.regularSharePct)
+const shown = byPay.slice(0, SHOWN)
+const hiddenCount = FIELDS.length - SHOWN
 const top = byPay[0]
 const bottom = byPay[byPay.length - 1]
 const aboveMedian = FIELDS.filter((x) => x.medianRs >= ALL_INDIA_MEDIAN_RS).length
 const lowestShare = byShare[byShare.length - 1]
 const multiple = (top.medianRs / bottom.medianRs).toFixed(1)
 const short = (n: string) => n.split(' &')[0]
-const totalSample = FIELDS.reduce((s, x) => s + x.sampleN, 0)
-const smallest = [...FIELDS].sort((a, b) => a.sampleN - b.sampleN)[0]
+const shownSample = shown.reduce((s, x) => s + x.sampleN, 0)
+const smallShown = [...shown].sort((a, b) => a.sampleN - b.sampleN)[0]
 const pct = (v: number, max: number) => `${((v / max) * 100).toFixed(2)}%`
 
 const insights = [
@@ -42,31 +43,11 @@ const insights = [
     text: `of ${short(lowestShare.name)} workers are on a regular salary. The rest are not on a regular salary.`,
   },
 ]
-
-// ── Ladder chart (SVG, no chart library) ──────────────────────────────────
-const W = 480
-const H = 360
-const PAD = { l: 50, r: 16, t: 24, b: 48 }
-const X_MAX = 30
-const Y_MAX_L = 24
-const px = (year: number) => PAD.l + (year / X_MAX) * (W - PAD.l - PAD.r)
-const py = (rs: number) => H - PAD.b - (rs / 100000 / Y_MAX_L) * (H - PAD.t - PAD.b)
-const MARKS = ['circle', 'square', 'diamond', 'triangle'] as const
-const markPoints = (kind: (typeof MARKS)[number], x: number, y: number, r: number) =>
-  kind === 'diamond'
-    ? `${x},${y - r - 1} ${x + r + 1},${y} ${x},${y + r + 1} ${x - r - 1},${y}`
-    : `${x},${y - r - 1} ${x + r + 1},${y + r} ${x - r - 1},${y + r}`
-const ladders = LADDERS.map((l, i) => ({
-  ...l,
-  idx: i,
-  mark: MARKS[i % MARKS.length],
-  pts: l.stages.map((s, k) => ({ title: s.title, x: px(s.fromYear), y: py(entryPay(l, k)), pay: entryPay(l, k) })),
-}))
 ---
 
 <BaseLayout
   title="The numbers behind the careers | ParamAI™ Blog"
-  description={`What 13 career fields pay (${DATA_PERIOD}) and four official pay ladders (IAS, IPS, Army, professor), with the limits of each figure stated beside it.`}
+  description={`What the top career fields pay in India (${DATA_PERIOD}), with the limits of each figure stated. See all ${FIELDS.length} fields and the pay ladders on paramai.in.`}
 >
   <section class="mx-auto max-w-5xl px-4 pt-14 pb-6 sm:px-6 sm:pt-20">
     <p class="text-xs font-semibold uppercase tracking-wider text-brand-600 dark:text-brand-400">Data</p>
@@ -90,16 +71,17 @@ const ladders = LADDERS.map((l, i) => ({
     </ul>
   </section>
 
-  {/* ───────── Field pay ───────── */}
-  <section class="mx-auto max-w-5xl px-4 py-6 sm:px-6" aria-labelledby="field-heading" data-field-chart>
+  {/* ───────── Top fields (free preview) ───────── */}
+  <section class="mx-auto max-w-5xl px-4 py-6 sm:px-6" aria-labelledby="field-heading">
     <div class="ds-card">
       <p class="ds-eyebrow">Pay by career field</p>
       <h2 id="field-heading" class="text-xl font-bold leading-tight tracking-tight sm:text-2xl">
-        What {FIELDS.length} career fields pay, and how many jobs are on a regular salary
+        The {SHOWN} highest-paying career fields, by median monthly pay
       </h2>
       <p class="mt-2 max-w-3xl text-sm leading-6 text-ink-600 dark:text-ink-300">
-        Monthly earnings of regular wage and salaried workers, grouped into the {FIELDS.length} fields a
-        Class 10 student explores on ParamAI™. Source: NSO Periodic Labour Force Survey, {DATA_PERIOD.replace('NSO PLFS, ', '')}.
+        Monthly earnings of regular wage and salaried workers. Showing the {SHOWN} highest medians of the
+        {FIELDS.length} fields a Class 10 student explores on ParamAI™, not a typical career. Source: NSO
+        Periodic Labour Force Survey, {DATA_PERIOD.replace('NSO PLFS, ', '')}.
       </p>
 
       <div class="mt-6 grid gap-3 sm:grid-cols-3">
@@ -113,64 +95,27 @@ const ladders = LADDERS.map((l, i) => ({
         }
       </div>
 
-      <div class="ds-toggle mt-7" role="group" aria-label="Chart view" hidden>
-        <button type="button" data-mode="pay" aria-pressed="true">Median monthly pay</button>
-        <button type="button" data-mode="share" aria-pressed="false">Share on a regular salary</button>
-      </div>
-
-      {/* pay view */}
-      <div data-view="pay" class="mt-5">
-        <ol class="ds-rows">
-          {
-            byPay.map((f, idx) => {
-              const warm = f.medianRs < ALL_INDIA_MEDIAN_RS
-              return (
-                <li class="ds-row">
-                  <div class="ds-name">
-                    <span>{f.name}</span>
-                    {f.note && <span class="ds-note">{f.note}</span>}
-                  </div>
-                  <div class="ds-track" aria-hidden="true">
-                    <span class="ds-ref" style={`left:${pct(ALL_INDIA_MEDIAN_RS, PAY_MAX)}`} />
-                    <span class={`ds-bar ${warm ? 'ds-warm' : ''}`} style={`width:${pct(f.medianRs, PAY_MAX)};--i:${idx}`} />
-                    <span class="ds-mean" style={`left:${pct(f.meanRs, PAY_MAX)}`} />
-                  </div>
-                  <div class={`ds-val ${warm ? 'ds-val-warm' : ''}`}>{formatRs(f.medianRs)}</div>
-                </li>
-              )
-            })
-          }
-        </ol>
-        <div class="ds-legend">
-          <span><i class="ds-key-mean"></i> Mean (average) pay</span>
-          <span><i class="ds-key-ref"></i> All-India median {formatRs(ALL_INDIA_MEDIAN_RS)} (all-India mean {formatRs(ALL_INDIA_MEAN_RS)})</span>
-          <span><i class="ds-key-warm"></i> Below the all-India median</span>
-        </div>
-      </div>
-
-      {/* share view */}
-      <div data-view="share" class="mt-5" hidden>
-        <ol class="ds-rows">
-          {
-            byShare.map((f, idx) => {
-              const warm = f.regularSharePct < 50
-              return (
-                <li class="ds-row">
-                  <div class="ds-name">
-                    <span>{f.name}</span>
-                  </div>
-                  <div class="ds-track" aria-hidden="true">
-                    <span class={`ds-bar ${warm ? 'ds-warm' : ''}`} style={`width:${f.regularSharePct}%;--i:${idx}`} />
-                  </div>
-                  <div class={`ds-val ${warm ? 'ds-val-warm' : ''}`}>{f.regularSharePct}%</div>
-                </li>
-              )
-            })
-          }
-        </ol>
-        <div class="ds-legend">
-          <span><i class="ds-key-warm"></i> Fewer than half of the field’s workers are on a regular salary</span>
-        </div>
+      <ol class="ds-rows mt-7">
+        {
+          shown.map((f, idx) => (
+            <li class="ds-row">
+              <div class="ds-name">
+                <span>{f.name}</span>
+                {f.note && <span class="ds-note">{f.note}</span>}
+              </div>
+              <div class="ds-track" aria-hidden="true">
+                <span class="ds-ref" style={`left:${pct(ALL_INDIA_MEDIAN_RS, PAY_MAX)}`} />
+                <span class="ds-bar" style={`width:${pct(f.medianRs, PAY_MAX)};--i:${idx}`} />
+                <span class="ds-mean" style={`left:${pct(f.meanRs, PAY_MAX)}`} />
+              </div>
+              <div class="ds-val">{formatRs(f.medianRs)}</div>
+            </li>
+          ))
+        }
+      </ol>
+      <div class="ds-legend">
+        <span><i class="ds-key-mean"></i> Mean (average) pay</span>
+        <span><i class="ds-key-ref"></i> All-India median {formatRs(ALL_INDIA_MEDIAN_RS)}</span>
       </div>
 
       <details class="mt-5">
@@ -178,18 +123,16 @@ const ladders = LADDERS.map((l, i) => ({
         <ul class="ds-notes">
           <li>
             Pay is the median for <strong>regular wage and salaried workers only</strong>, in rupees per
-            month, from {formatNum(totalSample)} sampled salaried workers across the {FIELDS.length} fields.
-            Workers who are not on a regular salary are not in the pay figures, which is why the share on a
-            regular salary matters.
+            month, from {formatNum(shownSample)} sampled salaried workers in these {SHOWN} fields. Workers
+            who are not on a regular salary are not in the pay figures.
           </li>
           <li>
             Fields are built from three-digit occupation groups (NCO-2015), which are wider than a single
-            career. Two groups are shared between fields, so read fields as context, not as a promise of
-            what any one role pays.
+            career. Read them as context, not as a promise of what any one role pays. Pay is indicative.
           </li>
           <li>
-            Nine months of one year is a snapshot, not a trend. {smallest.name} rests on only {formatNum(smallest.sampleN)} salaried
-            records: indicative only.
+            Nine months of one year is a snapshot, not a trend. {smallShown.name} rests on only {formatNum(smallShown.sampleN)} salaried
+            records.
           </li>
           <li>
             The dashed line is the all-India median ({formatRs(ALL_INDIA_MEDIAN_RS)}) across every salaried worker, not
@@ -202,7 +145,7 @@ const ladders = LADDERS.map((l, i) => ({
         <summary class="ds-summary">Table version of this chart</summary>
         <div class="ds-table-wrap">
           <table class="ds-table">
-            <caption class="sr-only">Median and mean monthly pay, and share on a regular salary, by career field</caption>
+            <caption class="sr-only">Median and mean monthly pay, and share on a regular salary, for the {SHOWN} highest-paying fields</caption>
             <thead>
               <tr>
                 <th scope="col">Field</th>
@@ -213,7 +156,7 @@ const ladders = LADDERS.map((l, i) => ({
             </thead>
             <tbody>
               {
-                byPay.map((f) => (
+                shown.map((f) => (
                   <tr>
                     <th scope="row">{f.name}</th>
                     <td class="r">{formatRs(f.medianRs)}</td>
@@ -229,145 +172,22 @@ const ladders = LADDERS.map((l, i) => ({
     </div>
   </section>
 
-  {/* ───────── Pay ladders ───────── */}
-  <section class="mx-auto max-w-5xl px-4 py-6 sm:px-6" aria-labelledby="ladder-heading" data-ladder-chart>
-    <div class="ds-card">
-      <p class="ds-eyebrow ds-eyebrow-green">Careers with a published pay ladder</p>
-      <h2 id="ladder-heading" class="text-xl font-bold leading-tight tracking-tight sm:text-2xl">
-        Four careers where the promotion path is written into the rules
-      </h2>
-      <p class="mt-2 max-w-3xl text-sm leading-6 text-ink-600 dark:text-ink-300">
-        For these careers, pay on entering each rank comes from the government’s own pay rules and
-        notices, not from a survey or a guess. Pick a career to see every stage.
-      </p>
-
-      <div class="ds-tabs mt-6" role="group" aria-label="Choose a career" hidden>
-        {
-          ladders.map((l, i) => (
-            <button type="button" data-ladder={l.idx} aria-pressed={i === 0 ? 'true' : 'false'} class={`ds-tab ds-l${l.idx}`}>
-              <svg width="12" height="12" viewBox="0 0 12 12" aria-hidden="true">
-                {l.mark === 'circle' && <circle cx="6" cy="6" r="4" class="ds-mk" />}
-                {l.mark === 'square' && <rect x="2" y="2" width="8" height="8" class="ds-mk" />}
-                {(l.mark === 'diamond' || l.mark === 'triangle') && <polygon points={markPoints(l.mark, 6, 6, 3.5)} class="ds-mk" />}
-              </svg>
-              {l.name}
-            </button>
-          ))
-        }
-      </div>
-
-      <div class="mt-5">
-        <svg
-          viewBox={`0 0 ${W} ${H}`}
-          class="ds-svg"
-          role="img"
-          aria-label="Line chart of basic pay on entering each rank against years of service for the IAS, IPS, Army and university professor ladders. A table with the same figures follows."
-        >
-          {
-            [0, 6, 12, 18, 24].map((v) => (
-              <g>
-                <line x1={PAD.l} x2={W - PAD.r} y1={py(v * 100000)} y2={py(v * 100000)} class="ds-grid" stroke-dasharray={v === 0 ? undefined : '3 5'} />
-                <text x={PAD.l - 8} y={py(v * 100000) + 4} text-anchor="end" class="ds-ax">{v === 0 ? '0' : `₹${v}L`}</text>
-              </g>
-            ))
-          }
-          {
-            [0, 5, 10, 15, 20, 25, 30].map((yr) => (
-              <text x={px(yr)} y={H - PAD.b + 18} text-anchor="middle" class="ds-ax">{yr}</text>
-            ))
-          }
-          <text x={(PAD.l + W - PAD.r) / 2} y={H - 8} text-anchor="middle" class="ds-ax">Years of service</text>
-          <text transform={`translate(12 ${(H - PAD.b + PAD.t) / 2}) rotate(-90)`} text-anchor="middle" class="ds-ax">
-            Basic pay per year, ₹ lakh
-          </text>
-
-          {
-            /* default-active ladder is drawn last so it sits on top */
-            [...ladders.slice(1), ladders[0]].map((l) => (
-              <g class={`ds-line ds-l${l.idx}`} data-line={l.idx} data-active={l.idx === 0 ? 'true' : 'false'}>
-                <path
-                  d={l.pts.map((p, k) => `${k ? 'L' : 'M'}${p.x.toFixed(1)} ${p.y.toFixed(1)}`).join(' ')}
-                  fill="none"
-                  class="ds-path"
-                  pathLength="1"
-                />
-                {l.pts.map((p) =>
-                  l.mark === 'circle' ? (
-                    <circle cx={p.x} cy={p.y} r="5" class="ds-pt" />
-                  ) : l.mark === 'square' ? (
-                    <rect x={p.x - 4.5} y={p.y - 4.5} width="9" height="9" class="ds-pt" />
-                  ) : (
-                    <polygon points={markPoints(l.mark, p.x, p.y, 4.5)} class="ds-pt" />
-                  ),
-                )}
-                {l.pts.map((p, k) => (
-                  <text x={p.x + (k === 0 ? 9 : 0)} y={p.y - 11} text-anchor={k === 0 ? 'start' : 'middle'} class="ds-pl">
-                    {formatLakh(p.pay)}
-                  </text>
-                ))}
-              </g>
-            ))
-          }
-        </svg>
-      </div>
-
-      {
-        ladders.map((l, i) => (
-          <div data-ladder-panel={l.idx} class="mt-5" hidden={i !== 0}>
-            <div class="ds-table-wrap">
-              <table class="ds-table">
-                <caption class="sr-only">Stages and basic pay for {l.name}</caption>
-                <thead>
-                  <tr>
-                    <th scope="col">Rank</th>
-                    <th scope="col" class="r">From year</th>
-                    <th scope="col" class="r">Pay on entry</th>
-                    <th scope="col" class="r">Top of stage</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {l.stages.map((s, k) => (
-                    <tr>
-                      <th scope="row">{s.title}</th>
-                      <td class="r">{s.fromYear}</td>
-                      <td class="r">{formatLakh(entryPay(l, k))}</td>
-                      <td class={`r ds-top ds-l${l.idx}`}>{formatLakh(s.topPayRs)}</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-            <p class="mt-4 text-xs leading-5 text-ink-600 dark:text-ink-300">
-              {l.name}: from {formatLakh(l.startPayRs)} to {formatLakh(l.stages[l.stages.length - 1].topPayRs)} a year at the top of the
-              scale modelled here, across {l.stages.length} stages. Source: {l.source}.
-            </p>
-          </div>
-        ))
-      }
-
-      <p class="mt-3 text-xs leading-5 text-ink-600 dark:text-ink-300">
-        Ladders are basic pay only (monthly basic × 12), before allowances. Ranks above the last stage
-        shown are by selection with no fixed years, so they are not modelled.
-      </p>
-    </div>
-  </section>
-
-  <div class="mx-auto max-w-3xl px-4 sm:px-6">
+  {/* ───────── What is on paramai.in ───────── */}
+  <section class="mx-auto max-w-3xl px-4 pt-2 sm:px-6" aria-labelledby="more-heading">
+    <h2 id="more-heading" class="text-xl font-bold tracking-tight sm:text-2xl">There is more on paramai.in</h2>
+    <ul class="mt-3 list-disc space-y-1.5 pl-5 text-sm leading-6 text-ink-600 dark:text-ink-300">
+      <li>The other {hiddenCount} fields, with their median and mean pay.</li>
+      <li>The share of each field’s workers who are on a regular salary.</li>
+      <li>Pay ladders for {LADDERS.map((l) => l.name).join(', ')}, stage by stage, as basic pay before allowances.</li>
+      <li>Which careers match your own profile.</li>
+    </ul>
+    <p class="mt-3 text-sm text-ink-600 dark:text-ink-300">The assessment is free.</p>
     <AssessmentCTA
       medium="data"
-      campaign="numbers-behind-careers"
-      label="See which careers fit you, then check the numbers"
+      campaign="data"
+      label={`See all ${FIELDS.length} fields and the pay ladders, and see which careers match YOUR profile`}
     />
-  </div>
-
-  <noscript>
-    <style>
-      [data-view='share'],
-      [data-ladder-panel] {
-        display: block !important;
-      }
-    </style>
-  </noscript>
+  </section>
 
   <style is:global>
     :root {
@@ -375,7 +195,6 @@ const ladders = LADDERS.map((l, i) => ({
       --ds-card-b: rgba(124, 58, 237, 0.22);
       --ds-soft: rgba(15, 23, 42, 0.05);
       --ds-line: rgba(15, 23, 42, 0.14);
-      --ds-grid: rgba(15, 23, 42, 0.12);
       --ds-ax: #475569;
       --ds-a0: #0891b2;
       --ds-a1: #7c3aed;
@@ -383,32 +202,17 @@ const ladders = LADDERS.map((l, i) => ({
       --ds-a3: #059669;
       --ds-bar1: #7c3aed;
       --ds-bar2: #0891b2;
-      --ds-warm1: #c2410c;
-      --ds-warm2: #f97316;
-      --ds-warm-t: #c2410c;
-      --ds-l0: #0891b2;
-      --ds-l1: #ea580c;
-      --ds-l2: #7c3aed;
-      --ds-l3: #059669;
-      --ds-halo: #ffffff;
     }
     :root.dark {
       --ds-card: #0b1022;
       --ds-card-b: rgba(124, 58, 237, 0.3);
       --ds-soft: rgba(255, 255, 255, 0.05);
       --ds-line: rgba(255, 255, 255, 0.14);
-      --ds-grid: rgba(255, 255, 255, 0.1);
       --ds-ax: #94a3b8;
       --ds-a0: #22d3ee;
       --ds-a1: #a78bfa;
       --ds-a2: #fb923c;
       --ds-a3: #34d399;
-      --ds-warm-t: #fdba74;
-      --ds-l0: #22d3ee;
-      --ds-l1: #fb923c;
-      --ds-l2: #a78bfa;
-      --ds-l3: #34d399;
-      --ds-halo: #0b1022;
     }
 
     .ds-stats { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0.75rem; list-style: none; padding: 0; margin-bottom: 0; }
@@ -428,19 +232,6 @@ const ladders = LADDERS.map((l, i) => ({
     .ds-insight-big { font-size: 1.5rem; font-weight: 700; font-variant-numeric: tabular-nums; color: var(--ds-a1); }
     .ds-insight p { margin-top: 0.25rem; font-size: 0.78rem; line-height: 1.25rem; color: var(--ds-ax); }
 
-    .ds-toggle, .ds-tabs { display: inline-flex; flex-wrap: wrap; gap: 0.5rem; }
-    .ds-toggle { gap: 0; padding: 0.25rem; border-radius: 0.75rem; background: var(--ds-soft); border: 1px solid var(--ds-card-b); max-width: 100%; }
-    .ds-toggle[hidden], .ds-tabs[hidden] { display: none; }
-    .ds-toggle.is-ready, .ds-tabs.is-ready { display: inline-flex; }
-    .ds-tabs { display: none; }
-    .ds-toggle button { padding: 0.5rem 0.875rem; border-radius: 0.5rem; font-size: 0.78rem; font-weight: 600; color: var(--ds-ax); }
-    .ds-toggle button[aria-pressed='true'] { background: #6d28d9; color: #fff; }
-    .ds-tab { display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.5rem 0.875rem; border-radius: 9999px; font-size: 0.78rem; font-weight: 600; border: 1px solid var(--ds-line); color: var(--ds-ax); background: var(--ds-soft); }
-    .ds-tab[aria-pressed='true'] { border-color: var(--lc); color: inherit; background: color-mix(in srgb, var(--lc) 16%, transparent); }
-    .ds-mk, .ds-pt { fill: var(--lc); stroke: var(--ds-halo); stroke-width: 1.5; }
-    .ds-l0 { --lc: var(--ds-l0); } .ds-l1 { --lc: var(--ds-l1); } .ds-l2 { --lc: var(--ds-l2); } .ds-l3 { --lc: var(--ds-l3); }
-    .ds-top { color: var(--lc); font-weight: 600; }
-    .ds-toggle button:focus-visible, .ds-tab:focus-visible, .ds-summary:focus-visible { outline: 2px solid #2563eb; outline-offset: 2px; }
 
     .ds-rows { list-style: none; padding: 0; margin: 0; display: grid; gap: 0.75rem; }
     .ds-row { display: grid; grid-template-columns: minmax(0, 1fr) auto; column-gap: 0.75rem; row-gap: 0.25rem; align-items: center; }
@@ -448,11 +239,9 @@ const ladders = LADDERS.map((l, i) => ({
     .ds-note { font-size: 0.6875rem; font-weight: 400; line-height: 1rem; margin-top: 0.125rem; color: var(--ds-ax); }
     .ds-track { position: relative; height: 22px; border-radius: 9999px; background: var(--ds-soft); }
     .ds-bar { position: absolute; inset: 0 auto 0 0; border-radius: 9999px; background: linear-gradient(90deg, var(--ds-bar1), var(--ds-bar2)); }
-    .ds-bar.ds-warm { background: linear-gradient(90deg, var(--ds-warm1), var(--ds-warm2)); }
     .ds-ref { position: absolute; top: -3px; bottom: -3px; border-left: 1px dashed var(--ds-ax); z-index: 1; }
     .ds-mean { position: absolute; top: 50%; width: 10px; height: 10px; transform: translate(-50%, -50%) rotate(45deg); background: #fff; border: 1.5px solid #0f172a; z-index: 2; }
     .ds-val { min-width: 4.6rem; text-align: right; font-size: 0.8125rem; font-weight: 700; font-variant-numeric: tabular-nums; }
-    .ds-val-warm { color: var(--ds-warm-t); }
     @media (min-width: 640px) {
       .ds-row { grid-template-columns: 14rem minmax(0, 1fr) 5.2rem; }
       .ds-name { grid-column: auto; }
@@ -462,8 +251,8 @@ const ladders = LADDERS.map((l, i) => ({
     .ds-legend i { display: inline-block; flex: none; }
     .ds-key-mean { width: 8px; height: 8px; transform: rotate(45deg); background: #fff; border: 1.5px solid #0f172a; }
     .ds-key-ref { height: 12px; border-left: 1px dashed var(--ds-ax); }
-    .ds-key-warm { width: 20px; height: 8px; border-radius: 9999px; background: linear-gradient(90deg, var(--ds-warm1), var(--ds-warm2)); }
 
+    .ds-summary:focus-visible { outline: 2px solid #2563eb; outline-offset: 2px; }
     .ds-summary { cursor: pointer; font-size: 0.78rem; font-weight: 600; color: var(--ds-a0); }
     .ds-notes { margin-top: 0.75rem; padding-left: 1rem; list-style: disc; display: grid; gap: 0.375rem; font-size: 0.78rem; line-height: 1.25rem; color: var(--ds-ax); }
     .ds-notes strong { color: inherit; }
@@ -477,64 +266,10 @@ const ladders = LADDERS.map((l, i) => ({
     .ds-table .r { text-align: right; }
     .ds-table td.r { white-space: nowrap; }
 
-    .ds-svg { width: 100%; max-width: 600px; height: auto; display: block; margin: 0 auto; }
-    .ds-grid { stroke: var(--ds-grid); }
-    .ds-ax { font-size: 12px; fill: var(--ds-ax); }
-    .ds-path { stroke: var(--lc); stroke-width: 2; stroke-linejoin: round; stroke-linecap: round; }
-    .ds-line { opacity: 0.4; }
-    .ds-line[data-active='true'] { opacity: 1; }
-    .ds-line[data-active='true'] .ds-path { stroke-width: 3; }
-    .ds-pl { display: none; font-size: 12px; font-weight: 700; fill: currentColor; stroke: var(--ds-halo); stroke-width: 3px; paint-order: stroke; }
-    .ds-line[data-active='true'] .ds-pl { display: block; }
 
     @media (prefers-reduced-motion: no-preference) {
       .ds-bar { animation: ds-grow 900ms cubic-bezier(0.22, 1, 0.36, 1) both; animation-delay: calc(var(--i) * 45ms); transform-origin: left; }
-      .ds-line[data-active='true'] .ds-path { stroke-dasharray: 1; animation: ds-draw 1100ms cubic-bezier(0.22, 1, 0.36, 1) both; }
-      .ds-line { transition: opacity 250ms ease; }
     }
     @keyframes ds-grow { from { transform: scaleX(0); } to { transform: scaleX(1); } }
-    @keyframes ds-draw { from { stroke-dashoffset: 1; } to { stroke-dashoffset: 0; } }
   </style>
-
-  <script>
-    // Progressive enhancement: without JS the pay view, the first ladder and
-    // the table fallbacks remain readable.
-    const fieldRoot = document.querySelector('[data-field-chart]')
-    if (fieldRoot) {
-      const toggle = fieldRoot.querySelector<HTMLElement>('.ds-toggle')
-      toggle?.removeAttribute('hidden')
-      toggle?.classList.add('is-ready')
-      toggle?.querySelectorAll<HTMLButtonElement>('button').forEach((btn) =>
-        btn.addEventListener('click', () => {
-          const mode = btn.dataset.mode
-          toggle.querySelectorAll('button').forEach((b) => b.setAttribute('aria-pressed', String(b === btn)))
-          fieldRoot.querySelectorAll<HTMLElement>('[data-view]').forEach((v) => {
-            v.hidden = v.dataset.view !== mode
-          })
-        }),
-      )
-    }
-
-    const ladderRoot = document.querySelector('[data-ladder-chart]')
-    if (ladderRoot) {
-      const tabs = ladderRoot.querySelector<HTMLElement>('.ds-tabs')
-      tabs?.removeAttribute('hidden')
-      tabs?.classList.add('is-ready')
-      tabs?.querySelectorAll<HTMLButtonElement>('button').forEach((btn) =>
-        btn.addEventListener('click', () => {
-          const id = btn.dataset.ladder
-          tabs.querySelectorAll('button').forEach((b) => b.setAttribute('aria-pressed', String(b === btn)))
-          const svg = ladderRoot.querySelector('.ds-svg')
-          const lines = svg ? [...svg.querySelectorAll<SVGGElement>('[data-line]')] : []
-          lines.forEach((g) => g.setAttribute('data-active', String(g.dataset.line === id)))
-          // keep the active line drawn on top
-          const active = lines.find((g) => g.dataset.line === id)
-          if (active) active.parentNode?.appendChild(active)
-          ladderRoot.querySelectorAll<HTMLElement>('[data-ladder-panel]').forEach((p) => {
-            p.hidden = p.dataset.ladderPanel !== id
-          })
-        }),
-      )
-    }
-  </script>
 </BaseLayout>
