@@ -25,7 +25,7 @@ Two sites, two jobs. Agreed split (approved by the founder):
 ## Wording rules for data pages
 
 - Say "not on a regular salary" for the complement of the salaried share. Never "self-employed".
-- Marketing copy (home, CTA, posts) says "1,500+ real careers", as paramai.in does (founder decision; `CAREER_COUNT` in `src/lib/careerStats.ts`). The data page states the audited figure as such: "1,490 distinct careers audited" (from `career-stats.json`).
+- The career count is "1,500+ real careers" everywhere on paramai.blog, including /data/, as on paramai.in (founder decision). It is one constant, `CAREER_COUNT` in `src/lib/careerStats.ts`, so pages cannot disagree. `career-stats.json` still records the audited universe (1,490 distinct careers) as a source fact for the drift check; it is not shown on the site.
 - No reliability or validation claims about the data.
 - Pay is indicative context, not a promise.
 - Pay ladders are basic pay before allowances.
@@ -40,7 +40,7 @@ Sources, all in `aditdhn/param-ai-main-updated`:
 |---|---|
 | 13-field pay, salaried share, sample sizes | `docs/career_kb/navigator_field_plfs_2025.csv` |
 | IAS / IPS / Army / professor ladders | `config/career_progressions.json` |
-| PLFS record count, 1,490 careers, all-India median and mean | `docs/career_kb/README.md` |
+| PLFS record count, audited career count (1,490, recorded only), all-India median and mean | `docs/career_kb/README.md` |
 
 The JSON records the source repo/ref, a SHA-256 of each source file, and `figuresSha256`, a digest of the figures themselves.
 

@@ -64,9 +64,9 @@ export const HEADLINE_STATS = [
     detail: 'IAS, IPS, Army and university professor, from the published pay documents',
   },
   {
-    value: formatNum(f.distinctCareersAudited),
-    label: 'distinct careers audited',
-    detail: 'the ParamAI™ career universe, de-duplicated by name',
+    value: CAREER_COUNT,
+    label: 'real careers',
+    detail: 'in the ParamAI™ career universe',
   },
 ]
 
