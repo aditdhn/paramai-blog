@@ -2,7 +2,7 @@
 import BaseLayout from '@/layouts/BaseLayout.astro'
 import { getCollection } from 'astro:content'
 import { APP_URL } from '@/consts'
-import { HEADLINE_STATS } from '@/lib/careerStats'
+import { HEADLINE_STATS, CAREER_COUNT } from '@/lib/careerStats'
 
 const sectors = (await getCollection('sectors', ({ data }) => !data.draft)).sort(
   (a, b) => Number(a.data.sectorId.slice(1)) - Number(b.data.sectorId.slice(1)),
@@ -15,7 +15,7 @@ const posts = (await getCollection('posts', ({ data }) => !data.draft)).sort(
 // Stats shown in the hero strip. Keep these honest — they match what
 // src/backend/data/knowledge_bank + the engine actually produce.
 const stats = [
-  { value: '930+', label: 'Real careers' },
+  { value: CAREER_COUNT, label: 'Real careers' },
   { value: '41', label: 'Sectors' },
   { value: '388', label: 'Diagnostic questions' },
   { value: '15 min', label: 'To a first result' },
@@ -70,7 +70,7 @@ const fallbackVisual = { glyph: '✨', color: 'from-brand-500 to-brand-700' }
 ---
 
 <BaseLayout
-  title="ParamAI™ Blog — Career guidance, assessment science, 930+ real careers"
+  title={`ParamAI™ Blog — Career guidance, assessment science, ${CAREER_COUNT} real careers`}
   description="Explore 41 career sectors, read the research behind ParamAI™'s AI assessment, and find your best-fit career path."
 >
   {/* Hero */}
@@ -90,7 +90,7 @@ const fallbackVisual = { glyph: '✨', color: 'from-brand-500 to-brand-700' }
       <h1 class="animate-fade-in-up mt-5 text-5xl font-bold leading-[1.05] tracking-tight sm:text-6xl md:text-7xl">
         Your map to{' '}
         <span class="bg-gradient-to-r from-brand-600 via-brand-500 to-accent-500 bg-clip-text text-transparent">
-          930+ real careers.
+          {CAREER_COUNT} real careers.
         </span>
       </h1>
       <p class="animate-fade-in-up mx-auto mt-6 max-w-2xl text-lg text-ink-600 sm:text-xl dark:text-ink-300">
