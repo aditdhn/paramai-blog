@@ -6,6 +6,7 @@ import { readFileSync, readdirSync } from 'node:fs'
 
 // lastmod for pages whose content was revised: read updatedDate from frontmatter.
 const lastmod = new Map()
+const unfinished = new Set() // draft sector pages: built but noindex, so kept out of the sitemap
 for (const [dir, base, key] of [
   ['src/content/posts', '/posts/', null],
   ['src/content/sectors', '/sectors/', 'sectorSlug'],
@@ -13,8 +14,9 @@ for (const [dir, base, key] of [
   for (const file of readdirSync(dir).filter((f) => /\.mdx?$/.test(f))) {
     const fm = (readFileSync(dir + '/' + file, 'utf8').replace(/\r\n/g, '\n').split('\n---')[0]) ?? ''
     const upd = fm.match(/^updatedDate:\s*(\S+)/m)?.[1]
-    if (!upd) continue
     const slug = key ? fm.match(new RegExp('^' + key + ':\\s*"?([^"\\n]+)"?', 'm'))?.[1] : file.replace(/\.mdx?$/, '')
+    if (key && slug && /^draft:\s*true/m.test(fm)) unfinished.add('https://paramai.blog' + base + slug + '/')
+    if (!upd) continue
     if (slug) lastmod.set('https://paramai.blog' + base + slug + '/', new Date(upd).toISOString())
   }
 }
@@ -30,6 +32,7 @@ export default defineConfig({
   // and "Alternative page with proper canonical tag".
   trailingSlash: 'always',
   integrations: [mdx(), sitemap({
+      filter: (page) => !unfinished.has(page),
       serialize(item) {
         const lm = lastmod.get(item.url)
         if (lm) item.lastmod = lm

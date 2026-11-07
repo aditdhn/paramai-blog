@@ -15,6 +15,10 @@ Two sites, two jobs. Agreed split (approved by the founder):
 
 `/data/` is the free preview: the stat strip, the three callouts and the top 5 fields by median pay (with caveats). The other fields, the share-on-a-regular-salary view and the pay ladders are not rendered on this page at all; it sends readers to the free assessment on paramai.in (`utm_campaign=data`). All figures still come from `src/data/career-stats.json`; only the presentation is trimmed.
 
+## Link health
+
+`npm run build` ends with `scripts/check-links.mjs` (npm `postbuild`, so CI and Vercel run it): it resolves every internal link, stylesheet, image and social-preview URL in `dist/` and fails the build on a missing target; external hosts are listed, not fetched. Unfinished sector pages are `noindex`, not linked from the index and not in the sitemap until their draft flag is removed.
+
 ## Rules
 
 1. **No piece lives on both sites.** If a topic needs to be on both, write two different pieces with different jobs and link between them.
